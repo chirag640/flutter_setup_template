@@ -1,0 +1,9 @@
+{
+  "@@locale": "en",
+  "appTitle": "Setup Template",
+  "writeLogs": "Write Logs",
+  "toggleTheme": "Toggle Theme",
+  "language": "Language",
+  "autoTranslate": "Auto Translate",
+  "welcomeMessage": "Welcome to the Setup Template"
+}

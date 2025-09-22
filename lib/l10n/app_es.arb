@@ -1,0 +1,9 @@
+{
+  "@@locale": "es",
+  "appTitle": "Plantilla Setup",
+  "writeLogs": "Escribir registros",
+  "toggleTheme": "Cambiar tema",
+  "language": "Idioma",
+  "autoTranslate": "Traducción automática",
+  "welcomeMessage": "Bienvenido a la Plantilla Setup"
+}
