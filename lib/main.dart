@@ -7,6 +7,7 @@ import 'core/providers/theme_provider.dart';
 import 'core/providers/locale_provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'l10n/app_localizations.dart';
+import 'widgets/demo/widgets_showcase_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -88,6 +89,24 @@ class MainApp extends StatelessWidget {
                             AppLogger.instance.warning('This is a warning example', tag: 'Demo');
                           },
                           child: Text(AppLocalizations.of(context)?.writeLogs ?? 'Write Logs'),
+                        ),
+                        const SizedBox(height: 24),
+                        Builder(
+                          builder: (innerContext) => ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.push(
+                                innerContext,
+                                MaterialPageRoute(
+                                  builder: (context) => const WidgetsShowcasePage(),
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.widgets),
+                            label: const Text('View Universal Widgets'),
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                            ),
+                          ),
                         ),
                       ],
                     ),
