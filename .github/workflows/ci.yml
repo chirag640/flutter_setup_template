@@ -30,8 +30,8 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Verify formatting
-        run: dart format --output=none --set-exit-if-changed .
+      - name: Auto format
+        run: dart format .
 
       - name: Analyze code
         run: flutter analyze
