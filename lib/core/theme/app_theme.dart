@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'app_colors.dart';
 import 'app_fonts.dart';
+import 'theme_helper.dart';
 
 class AppTheme {
 	static ThemeData get light => _base(Brightness.light);
@@ -70,7 +71,7 @@ class AppTheme {
 				style: ElevatedButton.styleFrom(
 					backgroundColor: AppColors.primary,
 					foregroundColor: Colors.white,
-					disabledBackgroundColor: AppColors.primary.withOpacity(0.5),
+					disabledBackgroundColor: colorWithOpacity(AppColors.primary, 0.5),
 					disabledForegroundColor: Colors.white70,
 					padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
 					shape: RoundedRectangleBorder(
@@ -126,14 +127,14 @@ class AppTheme {
 			),
 
 			chipTheme: ChipThemeData(
-				backgroundColor: (isDark ? Colors.white : Colors.black).withOpacity(0.06),
+				backgroundColor: colorWithOpacity(isDark ? Colors.white : Colors.black, 0.06),
 				padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
 				shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
 				labelStyle: AppFonts.s12medium.copyWith(
 					color: isDark ? Colors.white : AppColors.textPrimary,
 				),
-				selectedColor: AppColors.primary.withOpacity(0.12),
-				secondarySelectedColor: AppColors.secondary.withOpacity(0.12),
+				selectedColor: colorWithOpacity(AppColors.primary, 0.12),
+				secondarySelectedColor: colorWithOpacity(AppColors.secondary, 0.12),
 			),
 
 					cardTheme: const CardThemeData(
