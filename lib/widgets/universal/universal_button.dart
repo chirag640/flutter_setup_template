@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_fonts.dart';
+import '../../core/theme/theme_helper.dart';
 
 /// Universal button with complete direct customization - no presets.
 /// Every visual property is directly controllable via parameters.
@@ -245,8 +246,8 @@ class _UniversalButtonState extends State<UniversalButton>
     final effectiveBgColor = widget.backgroundColor ??
         (isDark ? AppColors.primary : AppColors.primary);
     final effectiveFgColor = widget.foregroundColor ?? Colors.white;
-    final effectiveDisabledBg = widget.disabledBackgroundColor ??
-        effectiveBgColor.withOpacity(0.4);
+  final effectiveDisabledBg = widget.disabledBackgroundColor ??
+    colorWithOpacity(effectiveBgColor, 0.4);
     final effectiveDisabledFg =
         widget.disabledForegroundColor ?? Colors.white70;
     
@@ -317,7 +318,7 @@ class _UniversalButtonState extends State<UniversalButton>
               side: widget.showBorder && widget.borderColor != null
                   ? BorderSide(
                       color: effectiveDisabled
-                          ? effectiveDisabledFg.withOpacity(0.3)
+                          ? colorWithOpacity(effectiveDisabledFg, 0.3)
                           : widget.borderColor!,
                       width: widget.borderWidth ?? 1.5,
                     )

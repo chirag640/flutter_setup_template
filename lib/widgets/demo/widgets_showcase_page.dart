@@ -280,23 +280,23 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
         const SizedBox(height: 16),
         const Text('Card Variants', style: TextStyle(fontWeight: FontWeight.w600)),
         const SizedBox(height: 8),
-        UniversalCard(
+        UniversalCard.elevated(
           title: 'Elevated Card',
           subtitle: 'With shadow',
-          variant: CardVariant.elevated,
+          elevation: 8,
           showShadow: true,
         ),
         const SizedBox(height: 8),
-        UniversalCard(
+        UniversalCard.outlined(
           title: 'Outlined Card',
           subtitle: 'With border',
-          variant: CardVariant.outlined,
+          borderColor: AppColors.primary,
         ),
         const SizedBox(height: 8),
-        UniversalCard(
+        UniversalCard.filled(
           title: 'Filled Card',
           subtitle: 'With background color',
-          variant: CardVariant.filled,
+      backgroundColor: AppColors.primary.withAlpha((0.08 * 255).round()),
         ),
         
         const SizedBox(height: 16),
@@ -525,8 +525,8 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
           style: TextStyle(fontSize: 14, color: Colors.grey),
         ),
         const SizedBox(height: 8),
-        UniversalCard(
-          variant: CardVariant.filled,
+        UniversalCard.filled(
+          backgroundColor: AppColors.surface,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: const [

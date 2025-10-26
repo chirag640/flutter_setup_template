@@ -32,6 +32,75 @@ import '../../core/theme/app_fonts.dart';
 /// ```
 enum DialogType { info, success, warning, error, question, custom }
 
+int _opacityToAlpha(double opacity) => (opacity.clamp(0.0, 1.0) * 255).round();
+
+class _DialogVisualDefaults {
+  const _DialogVisualDefaults({
+    required this.icon,
+    required this.iconColor,
+    required this.iconBackgroundColor,
+    required this.titleColor,
+  });
+
+  final IconData icon;
+  final Color iconColor;
+  final Color iconBackgroundColor;
+  final Color titleColor;
+
+  static _DialogVisualDefaults forType(DialogType type) {
+    switch (type) {
+      case DialogType.success:
+        return _DialogVisualDefaults(
+          icon: Icons.check_circle_outline,
+          iconColor: AppColors.success,
+          iconBackgroundColor:
+              AppColors.success.withAlpha(_opacityToAlpha(0.12)),
+          titleColor: AppColors.textPrimary,
+        );
+      case DialogType.error:
+        return _DialogVisualDefaults(
+          icon: Icons.error_outline,
+          iconColor: AppColors.error,
+          iconBackgroundColor:
+              AppColors.error.withAlpha(_opacityToAlpha(0.12)),
+          titleColor: AppColors.textPrimary,
+        );
+      case DialogType.warning:
+        return _DialogVisualDefaults(
+          icon: Icons.warning_amber_outlined,
+          iconColor: AppColors.warning,
+          iconBackgroundColor:
+              AppColors.warning.withAlpha(_opacityToAlpha(0.12)),
+          titleColor: AppColors.textPrimary,
+        );
+      case DialogType.info:
+        return _DialogVisualDefaults(
+          icon: Icons.info_outline,
+          iconColor: AppColors.primary,
+          iconBackgroundColor:
+              AppColors.primary.withAlpha(_opacityToAlpha(0.12)),
+          titleColor: AppColors.textPrimary,
+        );
+      case DialogType.question:
+        return _DialogVisualDefaults(
+          icon: Icons.help_outline,
+          iconColor: AppColors.primary,
+          iconBackgroundColor:
+              AppColors.primary.withAlpha(_opacityToAlpha(0.12)),
+          titleColor: AppColors.textPrimary,
+        );
+      case DialogType.custom:
+        return _DialogVisualDefaults(
+          icon: Icons.info_outline,
+          iconColor: AppColors.primary,
+          iconBackgroundColor:
+              AppColors.primary.withAlpha(_opacityToAlpha(0.12)),
+          titleColor: AppColors.textPrimary,
+        );
+    }
+  }
+}
+
 class UniversalDialog {
   /// Show a custom dialog with full control
   static Future<T?> show<T>(
@@ -52,6 +121,8 @@ class UniversalDialog {
     IconData? customIcon,
     Color? iconColor,
     double? iconSize,
+    Color? titleColor,
+    Color? iconBackgroundColor,
   }) {
     return showDialog<T>(
       context: context,
@@ -72,6 +143,8 @@ class UniversalDialog {
         customIcon: customIcon,
         iconColor: iconColor,
         iconSize: iconSize,
+        titleColor: titleColor,
+        iconBackgroundColor: iconBackgroundColor,
       ),
     );
   }
@@ -308,6 +381,8 @@ class _UniversalDialogWidget extends StatelessWidget {
     this.customIcon,
     this.iconColor,
     this.iconSize,
+    this.titleColor,
+    this.iconBackgroundColor,
   }) : super(key: key);
 
   final String? title;
@@ -324,53 +399,62 @@ class _UniversalDialogWidget extends StatelessWidget {
   final IconData? customIcon;
   final Color? iconColor;
   final double? iconSize;
+  final Color? titleColor;
+  final Color? iconBackgroundColor;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    final defaults = _DialogVisualDefaults.forType(type);
 
-    final effectiveBgColor = backgroundColor ??
-        (isDark ? const Color(0xFF1E1E1E) : Colors.white);
-  final effectiveBorderRadius = borderRadius ?? 4.w;
-  final effectiveContentPadding =
-    contentPadding ?? EdgeInsets.fromLTRB(6.w, 2.5.h, 6.w, 2.h);
-  final effectiveActionsPadding =
-    actionsPadding ?? EdgeInsets.fromLTRB(4.w, 0, 4.w, 2.h);
+    final effectiveBackgroundColor =
+        backgroundColor ?? (isDark ? const Color(0xFF1E1E1E) : Colors.white);
+    final effectiveBorderRadius = borderRadius ?? 4.w;
+    final effectiveContentPadding =
+        contentPadding ?? EdgeInsets.fromLTRB(6.w, 2.5.h, 6.w, 2.h);
+    final effectiveActionsPadding =
+        actionsPadding ?? EdgeInsets.fromLTRB(4.w, 0, 4.w, 2.h);
+    final resolvedIconColor = iconColor ?? defaults.iconColor;
+    final resolvedIconBackgroundColor =
+        iconBackgroundColor ?? defaults.iconBackgroundColor;
+    final resolvedIcon = customIcon ?? defaults.icon;
+    final resolvedTitleColor = titleColor ?? defaults.titleColor;
+    final resolvedIconSize = iconSize ?? 50.0;
 
     return Dialog(
-      backgroundColor: effectiveBgColor,
+      backgroundColor: effectiveBackgroundColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(effectiveBorderRadius),
       ),
-      child: Container(
+      child: SizedBox(
         width: width ?? 80.w,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Icon (if enabled)
-            if (showIcon) _buildIcon(),
-
-            // Title
+            if (showIcon)
+              _buildIcon(
+                icon: resolvedIcon,
+                iconColor: resolvedIconColor,
+                backgroundColor: resolvedIconBackgroundColor,
+                size: resolvedIconSize,
+              ),
             if (title != null)
               Padding(
                 padding: EdgeInsets.fromLTRB(6.w, 2.5.h, 6.w, 1.h),
                 child: Text(
                   title!,
-                  style: AppFonts.s18bold.copyWith(fontSize: 16.sp),
+                  style: AppFonts.s18bold
+                      .copyWith(fontSize: 16.sp, color: resolvedTitleColor),
                   textAlign: TextAlign.center,
                 ),
               ),
-
-            // Content
             if (child != null)
               Padding(
                 padding: effectiveContentPadding,
                 child: child,
               ),
-
-            // Actions
             if (actions != null && actions!.isNotEmpty)
               Padding(
                 padding: effectiveActionsPadding,
@@ -385,26 +469,26 @@ class _UniversalDialogWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildIcon() {
-    final config = _getTypeConfig();
-    final effectiveIcon = customIcon ?? config['icon'] as IconData;
-    final effectiveColor = iconColor ?? config['color'] as Color;
-    final effectiveSize = iconSize ?? 50.0;
-
+  Widget _buildIcon({
+    required IconData icon,
+    required Color iconColor,
+    required Color backgroundColor,
+    required double size,
+  }) {
     return Padding(
-        padding: EdgeInsets.only(top: 3.h),
+      padding: EdgeInsets.only(top: 3.h),
       child: Center(
         child: Container(
-          width: effectiveSize + 5.w,
-          height: effectiveSize + 5.w,
+          width: size + 5.w,
+          height: size + 5.w,
           decoration: BoxDecoration(
-            color: effectiveColor.withOpacity(0.1),
+            color: backgroundColor,
             shape: BoxShape.circle,
           ),
           child: Icon(
-            effectiveIcon,
-            size: effectiveSize.sp,
-            color: effectiveColor,
+            icon,
+            size: size.sp,
+            color: iconColor,
           ),
         ),
       ),
@@ -418,40 +502,5 @@ class _UniversalDialogWidget extends StatelessWidget {
       buttons.add(Flexible(child: actions![i]));
     }
     return buttons;
-  }
-
-  Map<String, dynamic> _getTypeConfig() {
-    switch (type) {
-      case DialogType.success:
-        return {
-          'icon': Icons.check_circle_outline,
-          'color': AppColors.success,
-        };
-      case DialogType.error:
-        return {
-          'icon': Icons.error_outline,
-          'color': AppColors.error,
-        };
-      case DialogType.warning:
-        return {
-          'icon': Icons.warning_amber_outlined,
-          'color': AppColors.warning,
-        };
-      case DialogType.info:
-        return {
-          'icon': Icons.info_outline,
-          'color': AppColors.primary,
-        };
-      case DialogType.question:
-        return {
-          'icon': Icons.help_outline,
-          'color': AppColors.primary,
-        };
-      case DialogType.custom:
-        return {
-          'icon': Icons.info_outline,
-          'color': AppColors.primary,
-        };
-    }
   }
 }

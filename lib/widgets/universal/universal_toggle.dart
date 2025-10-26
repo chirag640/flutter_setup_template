@@ -295,9 +295,19 @@ class UniversalToggle extends StatelessWidget {
     Color inactiveColor,
     bool isDisabled,
   ) {
-  final effectiveWidth = width ?? 12.w;
-  final effectiveHeight = height ?? 4.h;
-  final effectiveBorderRadius = borderRadius ?? effectiveHeight / 2;
+    final effectiveWidth = width ?? 12.w;
+    final effectiveHeight = height ?? 4.h;
+    final effectiveBorderRadius = borderRadius ?? effectiveHeight / 2;
+    final trackColor = value
+        ? (activeTrackColor ?? activeColor)
+        : (inactiveTrackColor ?? inactiveColor);
+    final knobColor = thumbColor ?? Colors.white;
+    final borderSide = showBorder
+        ? Border.all(
+            color: borderColor ?? (value ? activeColor : inactiveColor),
+            width: borderWidth,
+          )
+        : null;
 
     return GestureDetector(
       onTap: isDisabled ? null : () => onChanged?.call(!value),
@@ -306,14 +316,9 @@ class UniversalToggle extends StatelessWidget {
         width: effectiveWidth,
         height: effectiveHeight,
         decoration: BoxDecoration(
-          color: value ? activeColor : inactiveColor,
+          color: trackColor,
           borderRadius: BorderRadius.circular(effectiveBorderRadius),
-          border: showBorder
-              ? Border.all(
-                  color: borderColor ?? activeColor,
-                  width: borderWidth,
-                )
-              : null,
+          border: borderSide,
         ),
         child: AnimatedAlign(
           duration: const Duration(milliseconds: 200),
@@ -323,7 +328,7 @@ class UniversalToggle extends StatelessWidget {
             width: effectiveHeight - 4,
             height: effectiveHeight - 4,
             decoration: BoxDecoration(
-              color: thumbColor ?? Colors.white,
+              color: knobColor,
               shape: BoxShape.circle,
             ),
           ),

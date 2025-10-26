@@ -3,6 +3,8 @@ import 'package:sizer/sizer.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/theme/app_fonts.dart';
 
+int _opacityToAlpha(double opacity) => (opacity.clamp(0.0, 1.0) * 255).round();
+
 /// Universal card widget supporting multiple layouts, gradients, and interactions.
 ///
 /// Example usage:
@@ -26,8 +28,6 @@ import '../../core/theme/app_fonts.dart';
 ///   icon: Icons.attach_money,
 /// )
 /// ```
-enum CardVariant { standard, elevated, outlined, filled }
-
 class UniversalCard extends StatefulWidget {
   const UniversalCard({
     Key? key,
@@ -38,7 +38,6 @@ class UniversalCard extends StatefulWidget {
     this.trailing,
     this.onTap,
     this.onLongPress,
-    this.variant = CardVariant.standard,
     this.padding,
     this.margin,
     this.width,
@@ -46,11 +45,12 @@ class UniversalCard extends StatefulWidget {
     this.backgroundColor,
     this.borderColor,
     this.borderWidth = 1.0,
+    this.showBorder = false,
     this.borderRadius,
     this.gradient,
     this.elevation = 0,
     this.shadowColor,
-  this.shadowBlurRadius = 1.6,
+    this.shadowBlurRadius = 1.6,
     this.shadowOffset = const Offset(0, 2),
     this.showShadow = false,
     this.splashColor,
@@ -102,23 +102,127 @@ class UniversalCard extends StatefulWidget {
     );
   }
 
+  factory UniversalCard.elevated({
+    Key? key,
+    Widget? child,
+    String? title,
+    String? subtitle,
+    Widget? leading,
+    Widget? trailing,
+    VoidCallback? onTap,
+    VoidCallback? onLongPress,
+    EdgeInsetsGeometry? padding,
+    EdgeInsetsGeometry? margin,
+    double? width,
+    double? height,
+    double elevation = 6,
+    Color? shadowColor,
+    bool showShadow = true,
+  }) {
+    return UniversalCard(
+      key: key,
+      child: child,
+      title: title,
+      subtitle: subtitle,
+      leading: leading,
+      trailing: trailing,
+      onTap: onTap,
+      onLongPress: onLongPress,
+      padding: padding,
+      margin: margin,
+      width: width,
+      height: height,
+      elevation: elevation,
+      shadowColor: shadowColor,
+      showShadow: showShadow,
+    );
+  }
+
+  factory UniversalCard.outlined({
+    Key? key,
+    Widget? child,
+    String? title,
+    String? subtitle,
+    Widget? leading,
+    Widget? trailing,
+    VoidCallback? onTap,
+    VoidCallback? onLongPress,
+    EdgeInsetsGeometry? padding,
+    EdgeInsetsGeometry? margin,
+    double? width,
+    double? height,
+    Color? borderColor,
+    double borderWidth = 1.2,
+  }) {
+    return UniversalCard(
+      key: key,
+      child: child,
+      title: title,
+      subtitle: subtitle,
+      leading: leading,
+      trailing: trailing,
+      onTap: onTap,
+      onLongPress: onLongPress,
+      padding: padding,
+      margin: margin,
+      width: width,
+      height: height,
+      showBorder: true,
+      borderColor: borderColor ?? AppColors.outline,
+      borderWidth: borderWidth,
+    );
+  }
+
+  factory UniversalCard.filled({
+    Key? key,
+    Widget? child,
+    String? title,
+    String? subtitle,
+    Widget? leading,
+    Widget? trailing,
+    VoidCallback? onTap,
+    VoidCallback? onLongPress,
+    EdgeInsetsGeometry? padding,
+    EdgeInsetsGeometry? margin,
+    double? width,
+    double? height,
+    Color? backgroundColor,
+  }) {
+    return UniversalCard(
+      key: key,
+      child: child,
+      title: title,
+      subtitle: subtitle,
+      leading: leading,
+      trailing: trailing,
+      onTap: onTap,
+      onLongPress: onLongPress,
+      padding: padding,
+      margin: margin,
+      width: width,
+      height: height,
+      backgroundColor: backgroundColor ?? AppColors.surface,
+    );
+  }
+
   factory UniversalCard.info({
     Key? key,
     required String title,
     required String value,
     IconData? icon,
     Color? iconColor,
-    Color? valueColor,
     VoidCallback? onTap,
-    CardVariant variant = CardVariant.filled,
     EdgeInsetsGeometry? padding,
     EdgeInsetsGeometry? margin,
     double? width,
+    Color? backgroundColor,
+    Color? valueColor,
+    Color? subtitleColor,
   }) {
     return UniversalCard(
       key: key,
-      variant: variant,
-  padding: padding ?? EdgeInsets.all(4.w),
+      backgroundColor: backgroundColor ?? AppColors.surface,
+      padding: padding ?? EdgeInsets.all(4.w),
       margin: margin,
       width: width,
       onTap: onTap,
@@ -128,7 +232,8 @@ class UniversalCard extends StatefulWidget {
             Container(
               padding: EdgeInsets.all(2.w),
               decoration: BoxDecoration(
-                color: (iconColor ?? AppColors.primary).withOpacity(0.1),
+          color: (iconColor ?? AppColors.primary)
+            .withAlpha(_opacityToAlpha(0.1)),
                 borderRadius: BorderRadius.circular(3.w),
               ),
               child: Icon(icon, color: iconColor ?? AppColors.primary, size: 3.5.w),
@@ -142,7 +247,7 @@ class UniversalCard extends StatefulWidget {
                 Text(
                   title,
                   style: AppFonts.s12medium.copyWith(
-                    color: AppColors.textSecondary,
+                    color: subtitleColor ?? AppColors.textSecondary,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -172,8 +277,6 @@ class UniversalCard extends StatefulWidget {
   final VoidCallback? onLongPress;
 
   // Variant
-  final CardVariant variant;
-
   // Dimensions
   final EdgeInsetsGeometry? padding;
   final EdgeInsetsGeometry? margin;
@@ -184,6 +287,7 @@ class UniversalCard extends StatefulWidget {
   final Color? backgroundColor;
   final Color? borderColor;
   final double borderWidth;
+  final bool showBorder;
   final double? borderRadius;
   final Gradient? gradient;
   final double elevation;
@@ -251,15 +355,16 @@ class _UniversalCardState extends State<UniversalCard>
     final isDark = theme.brightness == Brightness.dark;
 
     // Resolve colors based on variant
-    final colors = _getVariantColors(theme, isDark);
-    final effectiveBgColor = widget.backgroundColor ?? colors['background'];
-    final effectiveBorderColor = widget.borderColor ?? colors['border'];
+    final effectiveBgColor = widget.backgroundColor ??
+        (isDark ? const Color(0xFF1B1B1B) : Colors.white);
+    final effectiveBorderColor = widget.borderColor ??
+        (widget.showBorder ? AppColors.outline : null);
 
     // Border radius
-  final effectiveBorderRadius = widget.borderRadius ?? 4.w;
+    final effectiveBorderRadius = widget.borderRadius ?? 4.w;
 
     // Padding
-  final effectivePadding = widget.padding ?? EdgeInsets.all(4.w);
+    final effectivePadding = widget.padding ?? EdgeInsets.all(4.w);
 
     // Build card content
     Widget content = _buildContent();
@@ -278,14 +383,19 @@ class _UniversalCardState extends State<UniversalCard>
                 color: widget.selectedBorderColor ?? AppColors.primary,
                 width: widget.selectedBorderWidth,
               )
-            : null,
+            : (widget.showBorder || effectiveBorderColor != null)
+                ? Border.all(
+                    color: effectiveBorderColor ?? AppColors.outline,
+                    width: widget.borderWidth,
+                  )
+                : null,
         boxShadow: widget.showShadow || widget.elevation > 0
             ? [
                 BoxShadow(
                   color: widget.shadowColor ??
                       (isDark ? Colors.black45 : Colors.black12),
                   blurRadius: widget.shadowBlurRadius * 1.h,
-                    offset: widget.shadowOffset,
+                  offset: widget.shadowOffset,
                 ),
               ]
             : null,
@@ -299,8 +409,7 @@ class _UniversalCardState extends State<UniversalCard>
                 color: widget.selectedBorderColor ?? AppColors.primary,
                 width: widget.selectedBorderWidth,
               )
-            : (widget.variant == CardVariant.outlined ||
-                    effectiveBorderColor != null)
+            : (widget.showBorder || effectiveBorderColor != null)
                 ? Border.all(
                     color: effectiveBorderColor ?? AppColors.outline,
                     width: widget.borderWidth,
@@ -312,7 +421,7 @@ class _UniversalCardState extends State<UniversalCard>
                   color: widget.shadowColor ??
                       (isDark ? Colors.black45 : Colors.black12),
                   blurRadius: widget.shadowBlurRadius * 1.h,
-                    offset: widget.shadowOffset,
+                  offset: widget.shadowOffset,
                 ),
               ]
             : null,
@@ -390,7 +499,7 @@ class _UniversalCardState extends State<UniversalCard>
 
     if (widget.leading != null) {
       children.add(widget.leading!);
-  children.add(SizedBox(width: 3.w));
+      children.add(SizedBox(width: 3.w));
     }
 
     // Title and subtitle
@@ -426,10 +535,10 @@ class _UniversalCardState extends State<UniversalCard>
     }
 
     if (widget.trailing != null) {
-  children.add(SizedBox(width: 3.w));
+      children.add(SizedBox(width: 3.w));
       children.add(widget.trailing!);
     } else if (widget.isExpandable) {
-  children.add(SizedBox(width: 3.w));
+      children.add(SizedBox(width: 3.w));
       children.add(
         AnimatedRotation(
           turns: _isExpanded ? 0.5 : 0,
@@ -477,24 +586,24 @@ class _UniversalCardState extends State<UniversalCard>
   }
 
   Widget _buildBadge() {
-  double top = -2.w;
+    double top = -2.w;
     double? right;
     double? left;
     double bottom = -8;
 
     switch (widget.badgePosition) {
       case BadgePosition.topRight:
-  right = -2.w;
+        right = -2.w;
         break;
       case BadgePosition.topLeft:
-  left = -2.w;
+        left = -2.w;
         break;
       case BadgePosition.bottomRight:
-  right = -2.w;
+        right = -2.w;
         top = double.nan;
         break;
       case BadgePosition.bottomLeft:
-  left = -2.w;
+        left = -2.w;
         top = double.nan;
         break;
     }
@@ -513,7 +622,7 @@ class _UniversalCardState extends State<UniversalCard>
           color: widget.badgeColor ?? AppColors.error,
           borderRadius: BorderRadius.circular(12),
         ),
-  constraints: BoxConstraints(minWidth: 6.w, minHeight: 6.w),
+    constraints: BoxConstraints(minWidth: 6.w, minHeight: 6.w),
         child: Text(
           widget.badge!,
           style: AppFonts.s12medium.copyWith(color: Colors.white, fontSize: 10.sp),
@@ -521,31 +630,6 @@ class _UniversalCardState extends State<UniversalCard>
         ),
       ),
     );
-  }
-
-  Map<String, Color?> _getVariantColors(ThemeData theme, bool isDark) {
-    switch (widget.variant) {
-      case CardVariant.standard:
-        return {
-          'background': isDark ? const Color(0xFF1B1B1B) : Colors.white,
-          'border': null,
-        };
-      case CardVariant.elevated:
-        return {
-          'background': isDark ? const Color(0xFF1B1B1B) : Colors.white,
-          'border': null,
-        };
-      case CardVariant.outlined:
-        return {
-          'background': isDark ? Colors.grey[900] : Colors.white,
-          'border': AppColors.outline,
-        };
-      case CardVariant.filled:
-        return {
-          'background': isDark ? Colors.grey[850] : AppColors.surface,
-          'border': null,
-        };
-    }
   }
 
   void _toggleExpand() {

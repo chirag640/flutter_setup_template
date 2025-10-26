@@ -46,11 +46,18 @@ class ThemeHelper {
 			boxShadow: [
 				if (!isDark)
 					BoxShadow(
-						color: Colors.black.withOpacity(0.05),
+						color: colorWithOpacity(Colors.black, 0.05),
 						blurRadius: 10,
 						offset: const Offset(0, 4),
 					),
 			],
 		);
 	}
+}
+
+// Utilities for working with opacity/alpha safely across the app.
+int opacityToAlpha(double opacity) => (opacity.clamp(0.0, 1.0) * 255).round();
+
+Color colorWithOpacity(Color color, double opacity) {
+  return color.withAlpha(opacityToAlpha(opacity));
 }
