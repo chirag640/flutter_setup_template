@@ -17,40 +17,40 @@ mixin BaseProvider on ChangeNotifier {
   void notifySafe() => Future.microtask(() => notifyListeners());
 
   void startLoading() {
-    this.logd('startLoading');
+    logd('startLoading');
     loading = true;
     error = null;
     notifySafe();
   }
 
   void endLoading() {
-    this.logd('endLoading');
+    logd('endLoading');
     loading = false;
     notifySafe();
   }
 
   void startUpdating() {
-    this.logd('startUpdating');
+    logd('startUpdating');
     updating = true;
     error = null;
     notifySafe();
   }
 
   void endUpdating() {
-    this.logd('endUpdating');
+    logd('endUpdating');
     updating = false;
     notifySafe();
   }
 
   void clearErrorAndNotify() {
-    this.logd('clearErrorAndNotify');
+    logd('clearErrorAndNotify');
     error = null;
     notifySafe();
   }
 
   /// Set error message and notify listeners safely.
   void setErrorAndNotify(String? message) {
-    this.logw('setErrorAndNotify: $message');
+    logw('setErrorAndNotify: $message');
     error = message;
     notifySafe();
   }
@@ -59,12 +59,12 @@ mixin BaseProvider on ChangeNotifier {
   /// Ensures startLoading() is called before and endLoading() is called after,
   /// even if the action throws. Returns the action's result.
   Future<T> usingLoading<T>(FutureOr<T> Function() action) async {
-    this.logd('usingLoading: begin');
+    logd('usingLoading: begin');
     startLoading();
     try {
       return await Future.sync(action);
     } finally {
-      this.logd('usingLoading: end');
+      logd('usingLoading: end');
       endLoading();
     }
   }
@@ -73,12 +73,12 @@ mixin BaseProvider on ChangeNotifier {
   /// Ensures startUpdating() is called before and endUpdating() is called after,
   /// even if the action throws. Returns the action's result.
   Future<T> usingUpdating<T>(FutureOr<T> Function() action) async {
-    this.logd('usingUpdating: begin');
+    logd('usingUpdating: begin');
     startUpdating();
     try {
       return await Future.sync(action);
     } finally {
-      this.logd('usingUpdating: end');
+      logd('usingUpdating: end');
       endUpdating();
     }
   }

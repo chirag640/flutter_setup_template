@@ -30,7 +30,7 @@ enum LabelPosition { left, right, top, bottom }
 
 class UniversalToggle extends StatelessWidget {
   const UniversalToggle({
-    Key? key,
+    super.key,
     required this.value,
     required this.onChanged,
     this.label,
@@ -51,7 +51,7 @@ class UniversalToggle extends StatelessWidget {
     this.padding,
     this.isDisabled = false,
     this.semanticLabel,
-  }) : super(key: key);
+  });
 
   // Named constructors
   factory UniversalToggle.switchStyle({

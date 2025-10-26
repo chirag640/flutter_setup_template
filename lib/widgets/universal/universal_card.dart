@@ -30,7 +30,7 @@ int _opacityToAlpha(double opacity) => (opacity.clamp(0.0, 1.0) * 255).round();
 /// ```
 class UniversalCard extends StatefulWidget {
   const UniversalCard({
-    Key? key,
+    super.key,
     this.child,
     this.title,
     this.subtitle,
@@ -65,7 +65,7 @@ class UniversalCard extends StatefulWidget {
     this.selectedBorderWidth = 2.0,
     this.clipBehavior = Clip.antiAlias,
     this.semanticLabel,
-  }) : super(key: key);
+  });
 
   // Named constructors
   factory UniversalCard.gradient({
@@ -87,7 +87,6 @@ class UniversalCard extends StatefulWidget {
     return UniversalCard(
       key: key,
       gradient: gradient,
-      child: child,
       title: title,
       subtitle: subtitle,
       leading: leading,
@@ -99,6 +98,7 @@ class UniversalCard extends StatefulWidget {
       borderRadius: borderRadius,
       width: width,
       height: height,
+      child: child,
     );
   }
 
@@ -121,7 +121,6 @@ class UniversalCard extends StatefulWidget {
   }) {
     return UniversalCard(
       key: key,
-      child: child,
       title: title,
       subtitle: subtitle,
       leading: leading,
@@ -135,6 +134,7 @@ class UniversalCard extends StatefulWidget {
       elevation: elevation,
       shadowColor: shadowColor,
       showShadow: showShadow,
+      child: child,
     );
   }
 
@@ -156,7 +156,6 @@ class UniversalCard extends StatefulWidget {
   }) {
     return UniversalCard(
       key: key,
-      child: child,
       title: title,
       subtitle: subtitle,
       leading: leading,
@@ -170,6 +169,7 @@ class UniversalCard extends StatefulWidget {
       showBorder: true,
       borderColor: borderColor ?? AppColors.outline,
       borderWidth: borderWidth,
+      child: child,
     );
   }
 
@@ -190,7 +190,6 @@ class UniversalCard extends StatefulWidget {
   }) {
     return UniversalCard(
       key: key,
-      child: child,
       title: title,
       subtitle: subtitle,
       leading: leading,
@@ -202,6 +201,7 @@ class UniversalCard extends StatefulWidget {
       width: width,
       height: height,
       backgroundColor: backgroundColor ?? AppColors.surface,
+      child: child,
     );
   }
 

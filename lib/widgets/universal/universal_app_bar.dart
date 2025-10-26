@@ -25,7 +25,7 @@ import '../../core/theme/app_fonts.dart';
 /// ```
 class UniversalAppBar extends StatelessWidget implements PreferredSizeWidget {
   const UniversalAppBar({
-    Key? key,
+    super.key,
     this.title,
     this.titleWidget,
     this.titleStyle,
@@ -47,7 +47,7 @@ class UniversalAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.borderWidth = 1.0,
     this.flexibleSpace,
     this.bottom,
-  }) : super(key: key);
+  });
 
   // Named constructors
   factory UniversalAppBar.gradient({
@@ -220,7 +220,8 @@ class UniversalAppBar extends StatelessWidget implements PreferredSizeWidget {
           ],
         ),
       );
-      if (shouldPop == true) {
+  if (!context.mounted) return;
+  if (shouldPop == true) {
         if (onBackPressed != null) {
           onBackPressed!();
         } else if (Navigator.of(context).canPop()) {
@@ -239,10 +240,9 @@ class UniversalAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 class _SearchBar extends StatefulWidget {
   const _SearchBar({
-    Key? key,
     required this.onSearch,
     this.hintText = 'Search...',
-  }) : super(key: key);
+  });
 
   final ValueChanged<String> onSearch;
   final String hintText;

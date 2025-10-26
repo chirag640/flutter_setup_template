@@ -22,7 +22,7 @@ enum IconPosition { left, right, top, bottom, only }
 
 class UniversalButton extends StatefulWidget {
   const UniversalButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.onPressed,
     this.isLoading = false,
@@ -71,7 +71,7 @@ class UniversalButton extends StatefulWidget {
     this.badgeText,
     this.badgeColor,
     this.badgeBackgroundColor,
-  }) : super(key: key);
+  });
 
   // Named constructors for convenience (optional)
   factory UniversalButton.icon({
@@ -256,7 +256,7 @@ class _UniversalButtonState extends State<UniversalButton>
     
     final effectiveTextStyle = widget.textStyle ??
         AppFonts.s14semibold.copyWith(
-          fontSize: widget.fontSize != null ? widget.fontSize!.sp : null,
+          fontSize: widget.fontSize?.sp,
           fontWeight: widget.fontWeight,
         );
 

@@ -15,7 +15,7 @@ import '../../core/theme/app_colors.dart';
 /// 2. Visual testing ground for all widget variants
 /// 3. Example implementation reference
 class WidgetsShowcasePage extends StatefulWidget {
-  const WidgetsShowcasePage({Key? key}) : super(key: key);
+  const WidgetsShowcasePage({super.key});
 
   @override
   State<WidgetsShowcasePage> createState() => _WidgetsShowcasePageState();

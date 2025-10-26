@@ -130,7 +130,6 @@ class UniversalDialog {
       barrierColor: barrierColor,
       builder: (context) => _UniversalDialogWidget(
         title: title,
-        child: child,
         actions: actions,
         type: type,
         contentPadding: contentPadding,
@@ -145,6 +144,7 @@ class UniversalDialog {
         iconSize: iconSize,
         titleColor: titleColor,
         iconBackgroundColor: iconBackgroundColor,
+        child: child,
       ),
     );
   }
@@ -366,7 +366,6 @@ class UniversalDialog {
 
 class _UniversalDialogWidget extends StatelessWidget {
   const _UniversalDialogWidget({
-    Key? key,
     this.title,
     this.child,
     this.actions,
@@ -383,7 +382,7 @@ class _UniversalDialogWidget extends StatelessWidget {
     this.iconSize,
     this.titleColor,
     this.iconBackgroundColor,
-  }) : super(key: key);
+  });
 
   final String? title;
   final Widget? child;

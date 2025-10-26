@@ -308,9 +308,9 @@ class PerformanceLogger {
 
 // Compatibility wrapper to mimic a subset of the `package:logger` API used elsewhere in the app.
 // Provides `log.d`, `log.i`, `log.w`, `log.e`, `log.wtf`, and `log.v` forwarding to AppLogger.
-final _CompatLogger log = _CompatLogger();
+final CompatLogger log = CompatLogger();
 
-class _CompatLogger {
+class CompatLogger {
   void d(dynamic message, {Object? error, StackTrace? stackTrace}) =>
     AppLogger.instance.d(message.toString(), extra: error);
   void i(dynamic message, {Object? error, StackTrace? stackTrace}) =>

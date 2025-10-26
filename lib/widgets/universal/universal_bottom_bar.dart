@@ -151,7 +151,6 @@ class UniversalBottomBar extends StatelessWidget {
     return UniversalBottomBar(
       key: key,
       mode: BottomBarMode.custom,
-      children: children,
       alignment: alignment,
       height: height,
       padding: padding,
@@ -160,6 +159,7 @@ class UniversalBottomBar extends StatelessWidget {
       elevation: elevation,
       showTopBorder: showTopBorder,
       safeArea: safeArea,
+      children: children,
     );
   }
 
