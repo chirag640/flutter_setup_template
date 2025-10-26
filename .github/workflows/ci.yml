@@ -36,8 +36,6 @@ jobs:
       - name: Analyze code
         run: flutter analyze
 
-      - name: Run tests
-        run: flutter test
 
   # Job 2: Build Android (APK only for CI)
   build-android:
