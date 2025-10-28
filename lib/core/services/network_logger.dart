@@ -48,7 +48,9 @@ class NetworkLogger {
 
     final StringBuffer buffer = StringBuffer();
     buffer.writeln('📥 HTTP RESPONSE [$id]');
-    buffer.writeln('Status: ${response.statusCode} ${response.reasonPhrase ?? ''}');
+    buffer.writeln(
+      'Status: ${response.statusCode} ${response.reasonPhrase ?? ''}',
+    );
     buffer.writeln('URL: ${response.request?.url}');
 
     if (duration != null) {
@@ -64,7 +66,9 @@ class NetworkLogger {
 
     if (response.body.isNotEmpty) {
       buffer.writeln('Body:');
-      buffer.writeln(_formatResponseBody(response.body, response.headers['content-type']));
+      buffer.writeln(
+        _formatResponseBody(response.body, response.headers['content-type']),
+      );
     }
 
     if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -102,7 +106,8 @@ class NetworkLogger {
     _logger.e(buffer.toString(), tag: _tag, stackTrace: stackTrace);
   }
 
-  static String _generateRequestId() => DateTime.now().millisecondsSinceEpoch.toString();
+  static String _generateRequestId() =>
+      DateTime.now().millisecondsSinceEpoch.toString();
 
   static bool _isSensitiveHeader(String headerName) {
     final sensitiveHeaders = {
@@ -170,8 +175,9 @@ class NetworkLogger {
 
   static String _formatXml(String xml) {
     try {
-      return xml.replaceAllMapped(RegExp(r'><'), (m) => '>\n<')
-        .replaceAllMapped(RegExp(r'<([^>]+)>'), (m) => '  ${m.group(0)}');
+      return xml
+          .replaceAllMapped(RegExp('><'), (m) => '>\n<')
+          .replaceAllMapped(RegExp('<([^>]+)>'), (m) => '  ${m.group(0)}');
     } catch (_) {
       return xml;
     }
@@ -179,20 +185,19 @@ class NetworkLogger {
 }
 
 class LoggingHttpClient extends http.BaseClient {
-  final http.Client _inner;
-  final bool _logRequests;
-  final bool _logResponses;
-  final bool _logErrors;
-
   LoggingHttpClient({
     http.Client? innerClient,
     bool logRequests = true,
     bool logResponses = true,
     bool logErrors = true,
-  })  : _inner = innerClient ?? http.Client(),
-        _logRequests = logRequests,
-        _logResponses = logResponses,
-        _logErrors = logErrors;
+  }) : _inner = innerClient ?? http.Client(),
+       _logRequests = logRequests,
+       _logResponses = logResponses,
+       _logErrors = logErrors;
+  final http.Client _inner;
+  final bool _logRequests;
+  final bool _logResponses;
+  final bool _logErrors;
 
   @override
   Future<http.StreamedResponse> send(http.BaseRequest request) async {
@@ -257,13 +262,18 @@ class LoggingHttpClient extends http.BaseClient {
 }
 
 class NetworkStatsLogger {
-  static final Map<String, List<Duration>> _requestTimes = <String, List<Duration>>{};
+  static final Map<String, List<Duration>> _requestTimes =
+      <String, List<Duration>>{};
   static final Map<String, int> _requestCounts = <String, int>{};
   static final Map<int, int> _statusCodeCounts = <int, int>{};
   static int _totalRequests = 0;
   static int _totalErrors = 0;
 
-  static void recordRequest(String endpoint, Duration duration, int statusCode) {
+  static void recordRequest(
+    String endpoint,
+    Duration duration,
+    int statusCode,
+  ) {
     _totalRequests++;
     _requestTimes.putIfAbsent(endpoint, () => <Duration>[]).add(duration);
     _requestCounts[endpoint] = (_requestCounts[endpoint] ?? 0) + 1;
@@ -272,12 +282,15 @@ class NetworkStatsLogger {
   }
 
   static Map<String, dynamic> getStats() {
-    final Map<String, Map<String, dynamic>> endpointStats = <String, Map<String, dynamic>>{};
+    final Map<String, Map<String, dynamic>> endpointStats =
+        <String, Map<String, dynamic>>{};
 
     _requestTimes.forEach((endpoint, times) {
       if (times.isNotEmpty) {
         times.sort();
-        final avg = times.fold<int>(0, (sum, t) => sum + t.inMilliseconds) / times.length;
+        final avg =
+            times.fold<int>(0, (sum, t) => sum + t.inMilliseconds) /
+            times.length;
         final median = times[times.length ~/ 2].inMilliseconds;
         endpointStats[endpoint] = {
           'count': _requestCounts[endpoint] ?? 0,
@@ -292,7 +305,9 @@ class NetworkStatsLogger {
     return {
       'total_requests': _totalRequests,
       'total_errors': _totalErrors,
-      'error_rate': _totalRequests > 0 ? (_totalErrors / _totalRequests * 100).toStringAsFixed(2) : '0.00',
+      'error_rate': _totalRequests > 0
+          ? (_totalErrors / _totalRequests * 100).toStringAsFixed(2)
+          : '0.00',
       'status_code_counts': _statusCodeCounts,
       'endpoint_stats': endpointStats,
       'last_updated': DateTime.now().toIso8601String(),

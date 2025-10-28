@@ -6,7 +6,7 @@ import '../../core/theme/theme_helper.dart';
 
 /// Universal button with complete direct customization - no presets.
 /// Every visual property is directly controllable via parameters.
-/// 
+///
 /// Example usage:
 /// ```dart
 /// UniversalButton(
@@ -22,9 +22,9 @@ enum IconPosition { left, right, top, bottom, only }
 
 class UniversalButton extends StatefulWidget {
   const UniversalButton({
-    super.key,
     required this.text,
     required this.onPressed,
+    super.key,
     this.isLoading = false,
     this.isDisabled = false,
     // Icon
@@ -75,10 +75,10 @@ class UniversalButton extends StatefulWidget {
 
   // Named constructors for convenience (optional)
   factory UniversalButton.icon({
-    Key? key,
     required String text,
     required VoidCallback? onPressed,
     required IconData icon,
+    Key? key,
     IconPosition iconPosition = IconPosition.left,
     bool isLoading = false,
     bool isDisabled = false,
@@ -111,9 +111,9 @@ class UniversalButton extends StatefulWidget {
   }
 
   factory UniversalButton.iconOnly({
-    Key? key,
     required IconData icon,
     required VoidCallback? onPressed,
+    Key? key,
     bool isLoading = false,
     bool isDisabled = false,
     double? iconSize,
@@ -217,9 +217,10 @@ class _UniversalButtonState extends State<UniversalButton>
       vsync: this,
       duration: widget.animationDuration,
     );
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _scaleAnimation = Tween<double>(
+      begin: 1,
+      end: 0.95,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -238,30 +239,34 @@ class _UniversalButtonState extends State<UniversalButton>
         widget.isDisabled || widget.onPressed == null || widget.isLoading;
 
     // Apply defaults with theme awareness
-  final effectiveHeight = widget.height ?? 6.h;
-  final effectivePadding = widget.padding ??
-    EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.5.h);
-  final effectiveBorderRadius = widget.borderRadius ?? 2.8.w;
-    
-    final effectiveBgColor = widget.backgroundColor ??
+    final effectiveHeight = widget.height ?? 6.h;
+    final effectivePadding =
+        widget.padding ??
+        EdgeInsets.symmetric(horizontal: 5.w, vertical: 1.5.h);
+    final effectiveBorderRadius = widget.borderRadius ?? 2.8.w;
+
+    final effectiveBgColor =
+        widget.backgroundColor ??
         (isDark ? AppColors.primary : AppColors.primary);
     final effectiveFgColor = widget.foregroundColor ?? Colors.white;
-  final effectiveDisabledBg = widget.disabledBackgroundColor ??
-    colorWithOpacity(effectiveBgColor, 0.4);
+    final effectiveDisabledBg =
+        widget.disabledBackgroundColor ??
+        colorWithOpacity(effectiveBgColor, 0.4);
     final effectiveDisabledFg =
         widget.disabledForegroundColor ?? Colors.white70;
-    
-  final effectiveIconSize = widget.iconSize ?? 2.4.w;
+
+    final effectiveIconSize = widget.iconSize ?? 2.4.w;
     final effectiveIconColor = widget.iconColor ?? effectiveFgColor;
-    
-    final effectiveTextStyle = widget.textStyle ??
+
+    final effectiveTextStyle =
+        widget.textStyle ??
         AppFonts.s14semibold.copyWith(
           fontSize: widget.fontSize?.sp,
           fontWeight: widget.fontWeight,
         );
 
     // Build button content
-    Widget content = _buildContent(
+    final Widget content = _buildContent(
       effectiveDisabled ? effectiveDisabledFg : effectiveFgColor,
       effectiveDisabled ? effectiveDisabledFg : effectiveIconColor,
       effectiveTextStyle,
@@ -283,7 +288,8 @@ class _UniversalButtonState extends State<UniversalButton>
         boxShadow: widget.showShadow
             ? [
                 BoxShadow(
-                  color: widget.shadowColor ??
+                  color:
+                      widget.shadowColor ??
                       (isDark ? Colors.black45 : Colors.black26),
                   blurRadius: widget.shadowBlurRadius ?? 1.6.h,
                   offset: widget.shadowOffset ?? Offset(0, 0.5.h),
@@ -291,7 +297,7 @@ class _UniversalButtonState extends State<UniversalButton>
               ]
             : null,
       );
-      
+
       buttonChild = Container(
         height: effectiveHeight,
         width: widget.width,
@@ -302,10 +308,7 @@ class _UniversalButtonState extends State<UniversalButton>
             onTap: effectiveDisabled ? null : _handleTap,
             borderRadius: BorderRadius.circular(effectiveBorderRadius),
             splashColor: widget.splashColor,
-            child: Padding(
-              padding: effectivePadding,
-              child: content,
-            ),
+            child: Padding(padding: effectivePadding, child: content),
           ),
         ),
       );
@@ -331,10 +334,12 @@ class _UniversalButtonState extends State<UniversalButton>
         child: ElevatedButton(
           onPressed: effectiveDisabled ? null : _handleTap,
           style: ElevatedButton.styleFrom(
-            backgroundColor:
-                effectiveDisabled ? effectiveDisabledBg : effectiveBgColor,
-            foregroundColor:
-                effectiveDisabled ? effectiveDisabledFg : effectiveFgColor,
+            backgroundColor: effectiveDisabled
+                ? effectiveDisabledBg
+                : effectiveBgColor,
+            foregroundColor: effectiveDisabled
+                ? effectiveDisabledFg
+                : effectiveFgColor,
             elevation: widget.elevation ?? 0,
             shadowColor: widget.shadowColor,
             padding: effectivePadding,
@@ -354,7 +359,8 @@ class _UniversalButtonState extends State<UniversalButton>
             borderRadius: BorderRadius.circular(effectiveBorderRadius),
             boxShadow: [
               BoxShadow(
-                color: widget.shadowColor ??
+                color:
+                    widget.shadowColor ??
                     (isDark ? Colors.black45 : Colors.black26),
                 blurRadius: widget.shadowBlurRadius ?? 1.6.h,
                 offset: widget.shadowOffset ?? Offset(0, 0.5.h),
@@ -367,10 +373,7 @@ class _UniversalButtonState extends State<UniversalButton>
     }
 
     // Wrap in scale animation
-    buttonChild = ScaleTransition(
-      scale: _scaleAnimation,
-      child: buttonChild,
-    );
+    buttonChild = ScaleTransition(scale: _scaleAnimation, child: buttonChild);
 
     // Add badge if present
     if (widget.badgeText != null && widget.badgeText!.isNotEmpty) {
@@ -428,8 +431,8 @@ class _UniversalButtonState extends State<UniversalButton>
     // Loading state
     if (widget.isLoading) {
       return SizedBox(
-  width: widget.loadingIndicatorSize ?? 2.4.w,
-  height: widget.loadingIndicatorSize ?? 2.4.w,
+        width: widget.loadingIndicatorSize ?? 2.4.w,
+        height: widget.loadingIndicatorSize ?? 2.4.w,
         child: CircularProgressIndicator(
           strokeWidth: 2.5,
           valueColor: AlwaysStoppedAnimation<Color>(
@@ -466,7 +469,7 @@ class _UniversalButtonState extends State<UniversalButton>
         return Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+          children: [
             iconWidget,
             SizedBox(width: 2.w),
             Flexible(child: textWidget),
@@ -476,7 +479,7 @@ class _UniversalButtonState extends State<UniversalButton>
         return Row(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+          children: [
             Flexible(child: textWidget),
             SizedBox(width: 2.w),
             iconWidget,
@@ -486,7 +489,7 @@ class _UniversalButtonState extends State<UniversalButton>
         return Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+          children: [
             iconWidget,
             SizedBox(height: 0.8.h),
             textWidget,
@@ -496,7 +499,7 @@ class _UniversalButtonState extends State<UniversalButton>
         return Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
-            children: [
+          children: [
             textWidget,
             SizedBox(height: 0.8.h),
             iconWidget,

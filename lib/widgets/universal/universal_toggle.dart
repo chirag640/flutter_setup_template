@@ -26,13 +26,14 @@ import '../../core/theme/app_fonts.dart';
 /// )
 /// ```
 enum ToggleStyle { switchStyle, checkbox, radio, custom }
+
 enum LabelPosition { left, right, top, bottom }
 
 class UniversalToggle extends StatelessWidget {
   const UniversalToggle({
-    super.key,
     required this.value,
     required this.onChanged,
+    super.key,
     this.label,
     this.labelPosition = LabelPosition.right,
     this.labelStyle,
@@ -55,9 +56,9 @@ class UniversalToggle extends StatelessWidget {
 
   // Named constructors
   factory UniversalToggle.switchStyle({
-    Key? key,
     required bool value,
     required ValueChanged<bool>? onChanged,
+    Key? key,
     String? label,
     LabelPosition labelPosition = LabelPosition.right,
     TextStyle? labelStyle,
@@ -74,7 +75,6 @@ class UniversalToggle extends StatelessWidget {
       label: label,
       labelPosition: labelPosition,
       labelStyle: labelStyle,
-      style: ToggleStyle.switchStyle,
       activeColor: activeColor,
       inactiveColor: inactiveColor,
       width: width,
@@ -84,9 +84,9 @@ class UniversalToggle extends StatelessWidget {
   }
 
   factory UniversalToggle.checkbox({
-    Key? key,
     required bool value,
     required ValueChanged<bool>? onChanged,
+    Key? key,
     String? label,
     LabelPosition labelPosition = LabelPosition.right,
     TextStyle? labelStyle,
@@ -113,9 +113,9 @@ class UniversalToggle extends StatelessWidget {
   }
 
   factory UniversalToggle.radio({
-    Key? key,
     required bool value,
     required ValueChanged<bool>? onChanged,
+    Key? key,
     String? label,
     LabelPosition labelPosition = LabelPosition.right,
     TextStyle? labelStyle,
@@ -178,7 +178,8 @@ class UniversalToggle extends StatelessWidget {
 
     final effectiveActiveColor = activeColor ?? AppColors.primary;
     final effectiveInactiveColor =
-        inactiveColor ?? (theme.brightness == Brightness.dark
+        inactiveColor ??
+        (theme.brightness == Brightness.dark
             ? Colors.grey[700]!
             : Colors.grey[300]!);
 
@@ -206,11 +207,7 @@ class UniversalToggle extends StatelessWidget {
         case LabelPosition.left:
           combined = Row(
             mainAxisSize: MainAxisSize.min,
-            children: [
-              labelWidget,
-              const SizedBox(width: 12),
-              toggleWidget,
-            ],
+            children: [labelWidget, const SizedBox(width: 12), toggleWidget],
           );
           break;
         case LabelPosition.right:
@@ -226,29 +223,19 @@ class UniversalToggle extends StatelessWidget {
         case LabelPosition.top:
           combined = Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
-              labelWidget,
-              const SizedBox(height: 8),
-              toggleWidget,
-            ],
+            children: [labelWidget, const SizedBox(height: 8), toggleWidget],
           );
           break;
         case LabelPosition.bottom:
           combined = Column(
             mainAxisSize: MainAxisSize.min,
-            children: [
-              toggleWidget,
-              const SizedBox(height: 8),
-              labelWidget,
-            ],
+            children: [toggleWidget, const SizedBox(height: 8), labelWidget],
           );
           break;
       }
 
       toggleWidget = GestureDetector(
-        onTap: effectiveDisabled
-            ? null
-            : () => onChanged?.call(!value),
+        onTap: effectiveDisabled ? null : () => onChanged?.call(!value),
         child: combined,
       );
     }
@@ -285,7 +272,11 @@ class UniversalToggle extends StatelessWidget {
         return _buildRadio(context, activeColor, inactiveColor, isDisabled);
       case ToggleStyle.custom:
         return _buildCustomToggle(
-            context, activeColor, inactiveColor, isDisabled);
+          context,
+          activeColor,
+          inactiveColor,
+          isDisabled,
+        );
     }
   }
 
@@ -327,10 +318,7 @@ class UniversalToggle extends StatelessWidget {
             margin: EdgeInsets.all(0.4.w),
             width: effectiveHeight - 4,
             height: effectiveHeight - 4,
-            decoration: BoxDecoration(
-              color: knobColor,
-              shape: BoxShape.circle,
-            ),
+            decoration: BoxDecoration(color: knobColor, shape: BoxShape.circle),
           ),
         ),
       ),
@@ -343,8 +331,8 @@ class UniversalToggle extends StatelessWidget {
     Color inactiveColor,
     bool isDisabled,
   ) {
-  final effectiveSize = width ?? 6.w;
-  final effectiveBorderRadius = borderRadius ?? 1.5.w;
+    final effectiveSize = width ?? 6.w;
+    final effectiveBorderRadius = borderRadius ?? 1.5.w;
 
     return GestureDetector(
       onTap: isDisabled ? null : () => onChanged?.call(!value),
@@ -356,9 +344,7 @@ class UniversalToggle extends StatelessWidget {
           color: value ? activeColor : Colors.transparent,
           borderRadius: BorderRadius.circular(effectiveBorderRadius),
           border: Border.all(
-            color: value
-                ? activeColor
-                : (borderColor ?? AppColors.outline),
+            color: value ? activeColor : (borderColor ?? AppColors.outline),
             width: showBorder ? borderWidth : 2.0,
           ),
         ),
@@ -379,7 +365,7 @@ class UniversalToggle extends StatelessWidget {
     Color inactiveColor,
     bool isDisabled,
   ) {
-  final effectiveSize = width ?? 6.w;
+    final effectiveSize = width ?? 6.w;
 
     return GestureDetector(
       onTap: isDisabled ? null : () => onChanged?.call(!value),
@@ -391,7 +377,7 @@ class UniversalToggle extends StatelessWidget {
           shape: BoxShape.circle,
           border: Border.all(
             color: value ? activeColor : (borderColor ?? AppColors.outline),
-            width: 2.0,
+            width: 2,
           ),
         ),
         child: value

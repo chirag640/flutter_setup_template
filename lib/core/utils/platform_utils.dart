@@ -1,4 +1,5 @@
-import 'package:flutter/foundation.dart' show kIsWeb, defaultTargetPlatform, TargetPlatform;
+import 'package:flutter/foundation.dart'
+    show kIsWeb, defaultTargetPlatform, TargetPlatform;
 
 /// Single-file platform utilities that work on web, mobile and desktop.
 /// Uses Flutter's foundation layer (kIsWeb + defaultTargetPlatform) and
@@ -6,13 +7,18 @@ import 'package:flutter/foundation.dart' show kIsWeb, defaultTargetPlatform, Tar
 class PlatformUtils {
   static bool get isWeb => kIsWeb;
 
-  static bool get isIOS => !kIsWeb && defaultTargetPlatform == TargetPlatform.iOS;
+  static bool get isIOS =>
+      !kIsWeb && defaultTargetPlatform == TargetPlatform.iOS;
 
-  static bool get isAndroid => !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
+  static bool get isAndroid =>
+      !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
 
-  static bool get isWindows => !kIsWeb && defaultTargetPlatform == TargetPlatform.windows;
+  static bool get isWindows =>
+      !kIsWeb && defaultTargetPlatform == TargetPlatform.windows;
 
-  static bool get isMacOS => !kIsWeb && defaultTargetPlatform == TargetPlatform.macOS;
+  static bool get isMacOS =>
+      !kIsWeb && defaultTargetPlatform == TargetPlatform.macOS;
 
-  static bool get isLinux => !kIsWeb && defaultTargetPlatform == TargetPlatform.linux;
+  static bool get isLinux =>
+      !kIsWeb && defaultTargetPlatform == TargetPlatform.linux;
 }

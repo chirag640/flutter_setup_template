@@ -25,7 +25,7 @@ class AppFonts {
   }
 
   // AppBar Title: 20px, platform adaptive
-  static TextStyle get appBarTitle => _adaptive(17.0, FontWeight.bold);
+  static TextStyle get appBarTitle => _adaptive(17, FontWeight.bold);
 
   // Named tokens per Figma spec
 
@@ -64,10 +64,10 @@ class AppFonts {
   static TextStyle get s20regular => _adaptive(17, FontWeight.w400);
 
   // 18 px
-  static TextStyle get s18bold => _adaptive(15.0, FontWeight.bold);
-  static TextStyle get s18semibold => _adaptive(15.0, FontWeight.w600);
-  static TextStyle get s18medium => _adaptive(15.0, FontWeight.w500);
-  static TextStyle get s18regular => _adaptive(15.0, FontWeight.w400);
+  static TextStyle get s18bold => _adaptive(15, FontWeight.bold);
+  static TextStyle get s18semibold => _adaptive(15, FontWeight.w600);
+  static TextStyle get s18medium => _adaptive(15, FontWeight.w500);
+  static TextStyle get s18regular => _adaptive(15, FontWeight.w400);
 
   // 17 px
   static TextStyle get s17bold => _adaptive(14.5, FontWeight.bold);
@@ -94,22 +94,22 @@ class AppFonts {
   static TextStyle get s13regular => _adaptive(11.5, FontWeight.w400);
 
   // 12 px
-  static TextStyle get s12bold => _adaptive(11.0, FontWeight.bold);
-  static TextStyle get s12semibold => _adaptive(11.0, FontWeight.w600);
-  static TextStyle get s12medium => _adaptive(11.0, FontWeight.w500);
-  static TextStyle get s12regular => _adaptive(11.0, FontWeight.w400);
+  static TextStyle get s12bold => _adaptive(11, FontWeight.bold);
+  static TextStyle get s12semibold => _adaptive(11, FontWeight.w600);
+  static TextStyle get s12medium => _adaptive(11, FontWeight.w500);
+  static TextStyle get s12regular => _adaptive(11, FontWeight.w400);
 
   // 11 px
-  static TextStyle get s11bold => _adaptive(10.0, FontWeight.bold);
-  static TextStyle get s11semibold => _adaptive(10.0, FontWeight.w600);
-  static TextStyle get s11medium => _adaptive(10.0, FontWeight.w500);
-  static TextStyle get s11regular => _adaptive(10.0, FontWeight.w400);
+  static TextStyle get s11bold => _adaptive(10, FontWeight.bold);
+  static TextStyle get s11semibold => _adaptive(10, FontWeight.w600);
+  static TextStyle get s11medium => _adaptive(10, FontWeight.w500);
+  static TextStyle get s11regular => _adaptive(10, FontWeight.w400);
 
   // 10 px
-  static TextStyle get s10bold => _adaptive(9.0, FontWeight.bold);
-  static TextStyle get s10semibold => _adaptive(9.0, FontWeight.w600);
-  static TextStyle get s10medium => _adaptive(9.0, FontWeight.w500);
-  static TextStyle get s10regular => _adaptive(9.0, FontWeight.w400);
+  static TextStyle get s10bold => _adaptive(9, FontWeight.bold);
+  static TextStyle get s10semibold => _adaptive(9, FontWeight.w600);
+  static TextStyle get s10medium => _adaptive(9, FontWeight.w500);
+  static TextStyle get s10regular => _adaptive(9, FontWeight.w400);
 
   // // 8 px
   // static TextStyle get s8bold => _adaptive(

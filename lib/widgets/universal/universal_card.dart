@@ -69,8 +69,8 @@ class UniversalCard extends StatefulWidget {
 
   // Named constructors
   factory UniversalCard.gradient({
-    Key? key,
     required Gradient gradient,
+    Key? key,
     Widget? child,
     String? title,
     String? subtitle,
@@ -206,9 +206,9 @@ class UniversalCard extends StatefulWidget {
   }
 
   factory UniversalCard.info({
-    Key? key,
     required String title,
     required String value,
+    Key? key,
     IconData? icon,
     Color? iconColor,
     VoidCallback? onTap,
@@ -232,11 +232,16 @@ class UniversalCard extends StatefulWidget {
             Container(
               padding: EdgeInsets.all(2.w),
               decoration: BoxDecoration(
-          color: (iconColor ?? AppColors.primary)
-            .withAlpha(_opacityToAlpha(0.1)),
+                color: (iconColor ?? AppColors.primary).withAlpha(
+                  _opacityToAlpha(0.1),
+                ),
                 borderRadius: BorderRadius.circular(3.w),
               ),
-              child: Icon(icon, color: iconColor ?? AppColors.primary, size: 3.5.w),
+              child: Icon(
+                icon,
+                color: iconColor ?? AppColors.primary,
+                size: 3.5.w,
+              ),
             ),
             SizedBox(width: 4.w),
           ],
@@ -355,10 +360,11 @@ class _UniversalCardState extends State<UniversalCard>
     final isDark = theme.brightness == Brightness.dark;
 
     // Resolve colors based on variant
-    final effectiveBgColor = widget.backgroundColor ??
+    final effectiveBgColor =
+        widget.backgroundColor ??
         (isDark ? const Color(0xFF1B1B1B) : Colors.white);
-    final effectiveBorderColor = widget.borderColor ??
-        (widget.showBorder ? AppColors.outline : null);
+    final effectiveBorderColor =
+        widget.borderColor ?? (widget.showBorder ? AppColors.outline : null);
 
     // Border radius
     final effectiveBorderRadius = widget.borderRadius ?? 4.w;
@@ -384,15 +390,16 @@ class _UniversalCardState extends State<UniversalCard>
                 width: widget.selectedBorderWidth,
               )
             : (widget.showBorder || effectiveBorderColor != null)
-                ? Border.all(
-                    color: effectiveBorderColor ?? AppColors.outline,
-                    width: widget.borderWidth,
-                  )
-                : null,
+            ? Border.all(
+                color: effectiveBorderColor ?? AppColors.outline,
+                width: widget.borderWidth,
+              )
+            : null,
         boxShadow: widget.showShadow || widget.elevation > 0
             ? [
                 BoxShadow(
-                  color: widget.shadowColor ??
+                  color:
+                      widget.shadowColor ??
                       (isDark ? Colors.black45 : Colors.black12),
                   blurRadius: widget.shadowBlurRadius * 1.h,
                   offset: widget.shadowOffset,
@@ -410,15 +417,16 @@ class _UniversalCardState extends State<UniversalCard>
                 width: widget.selectedBorderWidth,
               )
             : (widget.showBorder || effectiveBorderColor != null)
-                ? Border.all(
-                    color: effectiveBorderColor ?? AppColors.outline,
-                    width: widget.borderWidth,
-                  )
-                : null,
+            ? Border.all(
+                color: effectiveBorderColor ?? AppColors.outline,
+                width: widget.borderWidth,
+              )
+            : null,
         boxShadow: widget.showShadow || widget.elevation > 0
             ? [
                 BoxShadow(
-                  color: widget.shadowColor ??
+                  color:
+                      widget.shadowColor ??
                       (isDark ? Colors.black45 : Colors.black12),
                   blurRadius: widget.shadowBlurRadius * 1.h,
                   offset: widget.shadowOffset,
@@ -450,13 +458,7 @@ class _UniversalCardState extends State<UniversalCard>
 
     // Add badge if present
     if (widget.badge != null) {
-      card = Stack(
-        clipBehavior: Clip.none,
-        children: [
-          card,
-          _buildBadge(),
-        ],
-      );
+      card = Stack(clipBehavior: Clip.none, children: [card, _buildBadge()]);
     }
 
     // Add margin
@@ -548,10 +550,7 @@ class _UniversalCardState extends State<UniversalCard>
       );
     }
 
-    Widget row = Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: children,
-    );
+    final Widget row = Row(children: children);
 
     // Add custom child below if both title and child are provided
     if (widget.child != null && widget.title != null) {
@@ -589,7 +588,7 @@ class _UniversalCardState extends State<UniversalCard>
     double top = -2.w;
     double? right;
     double? left;
-    double bottom = -8;
+    const double bottom = -8;
 
     switch (widget.badgePosition) {
       case BadgePosition.topRight:
@@ -612,20 +611,24 @@ class _UniversalCardState extends State<UniversalCard>
       top: top.isNaN ? null : top,
       right: right,
       left: left,
-      bottom: widget.badgePosition == BadgePosition.bottomLeft ||
+      bottom:
+          widget.badgePosition == BadgePosition.bottomLeft ||
               widget.badgePosition == BadgePosition.bottomRight
           ? bottom
           : null,
       child: Container(
-  padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
+        padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 1.h),
         decoration: BoxDecoration(
           color: widget.badgeColor ?? AppColors.error,
           borderRadius: BorderRadius.circular(12),
         ),
-    constraints: BoxConstraints(minWidth: 6.w, minHeight: 6.w),
+        constraints: BoxConstraints(minWidth: 6.w, minHeight: 6.w),
         child: Text(
           widget.badge!,
-          style: AppFonts.s12medium.copyWith(color: Colors.white, fontSize: 10.sp),
+          style: AppFonts.s12medium.copyWith(
+            color: Colors.white,
+            fontSize: 10.sp,
+          ),
           textAlign: TextAlign.center,
         ),
       ),

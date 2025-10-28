@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+
+import '../../core/theme/app_colors.dart';
+import '../universal/universal_app_bar.dart';
+import '../universal/universal_bottom_bar.dart';
 import '../universal/universal_button.dart' show UniversalButton, IconPosition;
 import '../universal/universal_card.dart';
 import '../universal/universal_dialog.dart';
-import '../universal/universal_bottom_bar.dart';
 import '../universal/universal_toggle.dart';
-import '../universal/universal_app_bar.dart';
-import '../../core/theme/app_colors.dart';
 
 /// Comprehensive showcase page demonstrating all universal widgets.
-/// 
+///
 /// This page serves as:
 /// 1. Live documentation for developers
 /// 2. Visual testing ground for all widget variants
@@ -33,11 +34,10 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
     return Scaffold(
       appBar: UniversalAppBar(
         title: 'Universal Widgets Showcase',
-        showBackButton: true,
         actions: [
           IconButton(
             icon: const Icon(Icons.info_outline),
-            onPressed: () => _showInfoDialog(),
+            onPressed: _showInfoDialog,
           ),
         ],
       ),
@@ -47,23 +47,23 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
           _buildSectionHeader('Buttons'),
           _buildButtonsSection(),
           SizedBox(height: 3.h),
-          
+
           _buildSectionHeader('Cards'),
           _buildCardsSection(),
           SizedBox(height: 3.h),
-          
+
           _buildSectionHeader('Toggles'),
           _buildTogglesSection(),
           SizedBox(height: 3.h),
-          
+
           _buildSectionHeader('Dialogs'),
           _buildDialogsSection(),
           SizedBox(height: 3.h),
-          
+
           _buildSectionHeader('App Bars'),
           _buildAppBarsSection(),
           SizedBox(height: 3.h),
-          
+
           _buildSectionHeader('Bottom Bars'),
           _buildBottomBarsInfo(),
           SizedBox(height: 14.h), // Space for bottom bar
@@ -71,7 +71,7 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
       ),
       bottomNavigationBar: UniversalBottomBar.actions(
         primaryText: 'Save Changes',
-        primaryOnPressed: _isLoading ? null : () => _handleSave(),
+        primaryOnPressed: _isLoading ? null : _handleSave,
         primaryIsLoading: _isLoading,
         secondaryText: 'Cancel',
         secondaryOnPressed: () => Navigator.pop(context),
@@ -98,15 +98,18 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text('Primary Buttons', style: TextStyle(fontWeight: FontWeight.w600)),
-  SizedBox(height: 1.2.h),
+        const Text(
+          'Primary Buttons',
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
+        SizedBox(height: 1.2.h),
         UniversalButton(
           text: 'Primary Button',
           onPressed: () => _showSnackBar('Primary tapped'),
           backgroundColor: AppColors.primary,
           foregroundColor: Colors.white,
         ),
-  SizedBox(height: 1.2.h),
+        SizedBox(height: 1.2.h),
         UniversalButton(
           text: 'Loading Button',
           onPressed: () {},
@@ -114,24 +117,27 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
           backgroundColor: AppColors.primary,
           foregroundColor: Colors.white,
         ),
-  SizedBox(height: 1.2.h),
-        UniversalButton(
+        SizedBox(height: 1.2.h),
+        const UniversalButton(
           text: 'Disabled Button',
           onPressed: null,
           backgroundColor: AppColors.primary,
           foregroundColor: Colors.white,
         ),
-        
-  SizedBox(height: 2.5.h),
-        const Text('Color Variants', style: TextStyle(fontWeight: FontWeight.w600)),
-  SizedBox(height: 1.2.h),
+
+        SizedBox(height: 2.5.h),
+        const Text(
+          'Color Variants',
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
+        SizedBox(height: 1.2.h),
         UniversalButton(
           text: 'Secondary',
           onPressed: () => _showSnackBar('Secondary tapped'),
           backgroundColor: AppColors.secondary,
           foregroundColor: Colors.white,
         ),
-  SizedBox(height: 1.2.h),
+        SizedBox(height: 1.2.h),
         UniversalButton(
           text: 'Outlined',
           onPressed: () => _showSnackBar('Outlined tapped'),
@@ -140,7 +146,7 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
           borderColor: AppColors.primary,
           showBorder: true,
         ),
-  SizedBox(height: 1.2.h),
+        SizedBox(height: 1.2.h),
         UniversalButton(
           text: 'Text Button',
           onPressed: () => _showSnackBar('Text tapped'),
@@ -155,19 +161,21 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
           backgroundColor: Colors.red,
           foregroundColor: Colors.white,
         ),
-        
-  SizedBox(height: 2.5.h),
-        const Text('Icon Buttons', style: TextStyle(fontWeight: FontWeight.w600)),
-  SizedBox(height: 1.2.h),
+
+        SizedBox(height: 2.5.h),
+        const Text(
+          'Icon Buttons',
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
+        SizedBox(height: 1.2.h),
         UniversalButton.icon(
           text: 'Add Item',
           icon: Icons.add,
           onPressed: () => _showSnackBar('Add tapped'),
-          iconPosition: IconPosition.left,
           backgroundColor: AppColors.primary,
           foregroundColor: Colors.white,
         ),
-  SizedBox(height: 1.2.h),
+        SizedBox(height: 1.2.h),
         UniversalButton.icon(
           text: 'Next',
           icon: Icons.arrow_forward,
@@ -176,7 +184,7 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
           backgroundColor: AppColors.secondary,
           foregroundColor: Colors.white,
         ),
-  SizedBox(height: 1.2.h),
+        SizedBox(height: 1.2.h),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -203,10 +211,13 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
             ),
           ],
         ),
-        
-  SizedBox(height: 2.5.h),
-        const Text('Gradient Button', style: TextStyle(fontWeight: FontWeight.w600)),
-  SizedBox(height: 1.2.h),
+
+        SizedBox(height: 2.5.h),
+        const Text(
+          'Gradient Button',
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
+        SizedBox(height: 1.2.h),
         UniversalButton(
           text: 'Premium Feature',
           gradient: const LinearGradient(
@@ -216,10 +227,13 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
           icon: Icons.stars,
           foregroundColor: Colors.white,
         ),
-        
+
         const SizedBox(height: 16),
-        const Text('Button Sizes', style: TextStyle(fontWeight: FontWeight.w600)),
-  SizedBox(height: 1.2.h),
+        const Text(
+          'Button Sizes',
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
+        SizedBox(height: 1.2.h),
         UniversalButton(
           text: 'Small',
           onPressed: () {},
@@ -250,14 +264,15 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        const Text('Standard Cards', style: TextStyle(fontWeight: FontWeight.w600)),
+        const Text(
+          'Standard Cards',
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
         const SizedBox(height: 8),
         UniversalCard(
           title: 'John Doe',
           subtitle: 'john.doe@email.com',
-          leading: const CircleAvatar(
-            child: Icon(Icons.person),
-          ),
+          leading: const CircleAvatar(child: Icon(Icons.person)),
           trailing: const Icon(Icons.chevron_right),
           onTap: () => _showSnackBar('Card tapped'),
         ),
@@ -276,15 +291,17 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
           isSelected: _cardSelected,
           onTap: () => setState(() => _cardSelected = !_cardSelected),
         ),
-        
+
         const SizedBox(height: 16),
-        const Text('Card Variants', style: TextStyle(fontWeight: FontWeight.w600)),
+        const Text(
+          'Card Variants',
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
         const SizedBox(height: 8),
         UniversalCard.elevated(
           title: 'Elevated Card',
           subtitle: 'With shadow',
           elevation: 8,
-          showShadow: true,
         ),
         const SizedBox(height: 8),
         UniversalCard.outlined(
@@ -296,9 +313,9 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
         UniversalCard.filled(
           title: 'Filled Card',
           subtitle: 'With background color',
-      backgroundColor: AppColors.primary.withAlpha((0.08 * 255).round()),
+          backgroundColor: AppColors.primary.withAlpha((0.08 * 255).round()),
         ),
-        
+
         const SizedBox(height: 16),
         const Text('Info Cards', style: TextStyle(fontWeight: FontWeight.w600)),
         const SizedBox(height: 8),
@@ -307,7 +324,7 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
             Expanded(
               child: UniversalCard.info(
                 title: 'Total Sales',
-                value: '\$12,450',
+                value: r'$12,450',
                 icon: Icons.attach_money,
                 iconColor: Colors.green,
               ),
@@ -323,18 +340,21 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
             ),
           ],
         ),
-        
+
         const SizedBox(height: 16),
-        const Text('Gradient Card', style: TextStyle(fontWeight: FontWeight.w600)),
+        const Text(
+          'Gradient Card',
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
         const SizedBox(height: 8),
         UniversalCard.gradient(
           gradient: const LinearGradient(
             colors: [Color(0xFF667eea), Color(0xFF764ba2)],
           ),
           padding: const EdgeInsets.all(20),
-          child: Column(
+          child: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Text(
                 'Premium Feature',
                 style: TextStyle(
@@ -351,9 +371,12 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
             ],
           ),
         ),
-        
+
         const SizedBox(height: 16),
-        const Text('Expandable Card', style: TextStyle(fontWeight: FontWeight.w600)),
+        const Text(
+          'Expandable Card',
+          style: TextStyle(fontWeight: FontWeight.w600),
+        ),
         const SizedBox(height: 8),
         UniversalCard(
           title: 'Click to expand',
@@ -393,7 +416,7 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
           label: 'Disabled switch',
           isDisabled: true,
         ),
-        
+
         const SizedBox(height: 16),
         const Text('Checkbox', style: TextStyle(fontWeight: FontWeight.w600)),
         const SizedBox(height: 8),
@@ -409,7 +432,7 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
           label: 'Disabled checkbox',
           isDisabled: true,
         ),
-        
+
         const SizedBox(height: 16),
         const Text('Radio', style: TextStyle(fontWeight: FontWeight.w600)),
         const SizedBox(height: 8),
@@ -435,7 +458,7 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
       children: [
         UniversalButton(
           text: 'Show Confirmation Dialog',
-          onPressed: () => _showConfirmationDialog(),
+          onPressed: _showConfirmationDialog,
           icon: Icons.check_circle_outline,
           backgroundColor: AppColors.primary,
           foregroundColor: Colors.white,
@@ -443,7 +466,7 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
         const SizedBox(height: 8),
         UniversalButton(
           text: 'Show Success Dialog',
-          onPressed: () => _showSuccessDialog(),
+          onPressed: _showSuccessDialog,
           backgroundColor: AppColors.secondary,
           foregroundColor: Colors.white,
           icon: Icons.check,
@@ -451,7 +474,7 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
         const SizedBox(height: 8),
         UniversalButton(
           text: 'Show Error Dialog',
-          onPressed: () => _showErrorDialog(),
+          onPressed: _showErrorDialog,
           backgroundColor: Colors.red,
           foregroundColor: Colors.white,
           icon: Icons.error_outline,
@@ -459,7 +482,7 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
         const SizedBox(height: 8),
         UniversalButton(
           text: 'Show Warning Dialog',
-          onPressed: () => _showWarningDialog(),
+          onPressed: _showWarningDialog,
           backgroundColor: Colors.transparent,
           foregroundColor: Colors.orange,
           borderColor: Colors.orange,
@@ -469,7 +492,7 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
         const SizedBox(height: 8),
         UniversalButton(
           text: 'Show Loading Dialog',
-          onPressed: () => _showLoadingDialog(),
+          onPressed: _showLoadingDialog,
           backgroundColor: Colors.transparent,
           foregroundColor: AppColors.primary,
           icon: Icons.hourglass_empty,
@@ -488,7 +511,7 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
           style: TextStyle(fontSize: 14, color: Colors.grey),
         ),
         const SizedBox(height: 8),
-        UniversalButton(
+        const UniversalButton(
           text: 'Standard App Bar (Current)',
           onPressed: null,
           icon: Icons.done,
@@ -496,7 +519,7 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
         const SizedBox(height: 8),
         UniversalButton(
           text: 'Gradient App Bar Example',
-          onPressed: () => _navigateToGradientAppBar(),
+          onPressed: _navigateToGradientAppBar,
           backgroundColor: AppColors.secondary,
           foregroundColor: Colors.white,
           icon: Icons.gradient,
@@ -504,7 +527,7 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
         const SizedBox(height: 8),
         UniversalButton(
           text: 'Search App Bar Example',
-          onPressed: () => _navigateToSearchAppBar(),
+          onPressed: _navigateToSearchAppBar,
           backgroundColor: Colors.transparent,
           foregroundColor: AppColors.primary,
           borderColor: AppColors.primary,
@@ -527,14 +550,23 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
         const SizedBox(height: 8),
         UniversalCard.filled(
           backgroundColor: AppColors.surface,
-          child: Column(
+          child: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text('• Single button: Full-width primary action', style: TextStyle(fontSize: 13)),
+            children: [
+              Text(
+                '• Single button: Full-width primary action',
+                style: TextStyle(fontSize: 13),
+              ),
               SizedBox(height: 4),
-              Text('• Actions: Split Save/Cancel layout (current)', style: TextStyle(fontSize: 13)),
+              Text(
+                '• Actions: Split Save/Cancel layout (current)',
+                style: TextStyle(fontSize: 13),
+              ),
               SizedBox(height: 4),
-              Text('• Custom: Any widget combination', style: TextStyle(fontSize: 13)),
+              Text(
+                '• Custom: Any widget combination',
+                style: TextStyle(fontSize: 13),
+              ),
             ],
           ),
         ),
@@ -545,10 +577,7 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
   // HELPER METHODS
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        duration: const Duration(seconds: 2),
-      ),
+      SnackBar(content: Text(message), duration: const Duration(seconds: 2)),
     );
   }
 
@@ -558,7 +587,6 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
       title: 'Confirm Action',
       message: 'Are you sure you want to proceed with this action?',
       confirmText: 'Yes, Continue',
-      cancelText: 'Cancel',
     );
     if (confirmed) {
       _showSnackBar('Action confirmed!');
@@ -577,7 +605,6 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
   Future<void> _showErrorDialog() async {
     await UniversalDialog.showError(
       context,
-      title: 'Error',
       message: 'Something went wrong. Please try again.',
     );
   }
@@ -585,7 +612,6 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
   Future<void> _showWarningDialog() async {
     await UniversalDialog.showWarning(
       context,
-      title: 'Warning',
       message: 'This action may have unintended consequences.',
     );
   }
@@ -601,7 +627,8 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
     UniversalDialog.showInfo(
       context,
       title: 'About This Showcase',
-      message: 'This page demonstrates all universal widgets available in the app. Each widget is fully customizable with 20-30 flags and supports theming.',
+      message:
+          'This page demonstrates all universal widgets available in the app. Each widget is fully customizable with 20-30 flags and supports theming.',
     );
   }
 
@@ -618,18 +645,14 @@ class _WidgetsShowcasePageState extends State<WidgetsShowcasePage> {
   void _navigateToGradientAppBar() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => _GradientAppBarExample(),
-      ),
+      MaterialPageRoute(builder: (context) => _GradientAppBarExample()),
     );
   }
 
   void _navigateToSearchAppBar() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => _SearchAppBarExample(),
-      ),
+      MaterialPageRoute(builder: (context) => _SearchAppBarExample()),
     );
   }
 }
@@ -645,13 +668,13 @@ class _GradientAppBarExample extends StatelessWidget {
           colors: [Color(0xFF667eea), Color(0xFF764ba2)],
         ),
       ),
-      body: Center(
+      body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.gradient, size: 64, color: AppColors.primary),
-            const SizedBox(height: 16),
-            const Text(
+            Icon(Icons.gradient, size: 64, color: AppColors.primary),
+            SizedBox(height: 16),
+            Text(
               'This page has a gradient app bar!',
               style: TextStyle(fontSize: 18),
             ),

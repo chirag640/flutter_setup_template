@@ -1,85 +1,127 @@
 import 'dart:async';
-import 'package:flutter/foundation.dart';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:meta/meta.dart';
+
 import '../services/logger_service.dart';
 
-/// A mixin to standardize loading/updating/error lifecycle and notifications
-/// across providers.
-mixin BaseProvider on ChangeNotifier {
-  // Implement these in the host class (typically backed by private fields)
-  bool get loading;
-  set loading(bool v);
-  bool get updating;
-  set updating(bool v);
-  String? get error;
-  set error(String? v);
+const Object _sentinel = Object();
 
-  // Notify listeners safely (microtask) to avoid build-cycle issues.
-  void notifySafe() => Future.microtask(() => notifyListeners());
+/// Base status model that Riverpod notifiers can extend to expose
+/// loading/updating/error flags in a consistent way.
+@immutable
+abstract class BaseState<T extends BaseState<T>> {
+  const BaseState({this.loading = false, this.updating = false, this.error});
+
+  /// Indicates the provider is performing an initial load.
+  final bool loading;
+
+  /// Indicates the provider is performing a background mutation.
+  final bool updating;
+
+  /// Latest user-facing error message, if any.
+  final String? error;
+
+  bool get hasError => error != null;
+
+  /// Copy the state while updating the lifecycle flags.
+  T copyWithStatus({bool? loading, bool? updating, Object? error = _sentinel});
+}
+
+/// Simple concrete implementation that only tracks the base status flags.
+@immutable
+class SimpleBaseState extends BaseState<SimpleBaseState> {
+  const SimpleBaseState({super.loading, super.updating, super.error});
+
+  @override
+  SimpleBaseState copyWithStatus({
+    bool? loading,
+    bool? updating,
+    Object? error = _sentinel,
+  }) {
+    return SimpleBaseState(
+      loading: loading ?? this.loading,
+      updating: updating ?? this.updating,
+      error: identical(error, _sentinel) ? this.error : error as String?,
+    );
+  }
+}
+
+/// Mixin that ports the legacy ChangeNotifier helpers to Riverpod notifiers.
+mixin BaseNotifierMixin<T extends BaseState<T>> on StateNotifier<T> {
+  void _debug(String message) =>
+      AppLogger.instance.d(message, tag: runtimeType.toString());
+
+  void _warning(String message, {Object? extra}) =>
+      AppLogger.instance.w(message, tag: runtimeType.toString(), extra: extra);
 
   void startLoading() {
-    logd('startLoading');
-    loading = true;
-    error = null;
-    notifySafe();
+    _debug('startLoading');
+    if (!mounted) return;
+    state = state.copyWithStatus(loading: true, error: null);
   }
 
   void endLoading() {
-    logd('endLoading');
-    loading = false;
-    notifySafe();
+    _debug('endLoading');
+    if (!mounted) return;
+    state = state.copyWithStatus(loading: false);
   }
 
   void startUpdating() {
-    logd('startUpdating');
-    updating = true;
-    error = null;
-    notifySafe();
+    _debug('startUpdating');
+    if (!mounted) return;
+    state = state.copyWithStatus(updating: true, error: null);
   }
 
   void endUpdating() {
-    logd('endUpdating');
-    updating = false;
-    notifySafe();
+    _debug('endUpdating');
+    if (!mounted) return;
+    state = state.copyWithStatus(updating: false);
   }
 
   void clearErrorAndNotify() {
-    logd('clearErrorAndNotify');
-    error = null;
-    notifySafe();
+    _debug('clearErrorAndNotify');
+    if (!mounted) return;
+    state = state.copyWithStatus(error: null);
   }
 
-  /// Set error message and notify listeners safely.
   void setErrorAndNotify(String? message) {
-    logw('setErrorAndNotify: $message');
-    error = message;
-    notifySafe();
+    _warning('setErrorAndNotify', extra: message);
+    if (!mounted) return;
+    state = state.copyWithStatus(error: message);
   }
 
-  /// Wrap an async/sync action with loading lifecycle toggles.
-  /// Ensures startLoading() is called before and endLoading() is called after,
-  /// even if the action throws. Returns the action's result.
-  Future<T> usingLoading<T>(FutureOr<T> Function() action) async {
-    logd('usingLoading: begin');
+  Future<R> usingLoading<R>(FutureOr<R> Function() action) async {
+    _debug('usingLoading: begin');
     startLoading();
     try {
       return await Future.sync(action);
     } finally {
-      logd('usingLoading: end');
+      _debug('usingLoading: end');
       endLoading();
     }
   }
 
-  /// Wrap an async/sync action with updating lifecycle toggles.
-  /// Ensures startUpdating() is called before and endUpdating() is called after,
-  /// even if the action throws. Returns the action's result.
-  Future<T> usingUpdating<T>(FutureOr<T> Function() action) async {
-    logd('usingUpdating: begin');
+  Future<R> usingUpdating<R>(FutureOr<R> Function() action) async {
+    _debug('usingUpdating: begin');
     startUpdating();
     try {
       return await Future.sync(action);
     } finally {
-      logd('usingUpdating: end');
+      _debug('usingUpdating: end');
       endUpdating();
     }
   }
 }
+
+/// Default notifier that mirrors the old BaseProvider behaviour.
+class BaseNotifier extends StateNotifier<SimpleBaseState>
+    with BaseNotifierMixin<SimpleBaseState> {
+  BaseNotifier() : super(const SimpleBaseState());
+}
+
+/// Convenience provider for simple lifecycle-driven UIs.
+final baseNotifierProvider =
+    StateNotifierProvider<BaseNotifier, SimpleBaseState>(
+      (ref) => BaseNotifier(),
+    );

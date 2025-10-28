@@ -1,69 +1,283 @@
-# setup
+# Flutter Setup Template
 
-A new Flutter project.
-# setup (Template)
+[![CI - Build and Test](https://github.com/chirag640/flutter_setup_template/actions/workflows/ci.yml/badge.svg)](https://github.com/chirag640/flutter_setup_template/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/chirag640/flutter_setup_template/branch/main/graph/badge.svg)](https://codecov.io/gh/chirag640/flutter_setup_template)
+[![Release Build](https://github.com/chirag640/flutter_setup_template/actions/workflows/release.yml/badge.svg)](https://github.com/chirag640/flutter_setup_template/actions/workflows/release.yml)
+[![Flutter Version](https://img.shields.io/badge/flutter-3.35.7-blue.svg)](https://flutter.dev/)
+[![License](https://img.shields.io/badge/license-MIT-purple.svg)](LICENSE)
 
-A lightweight Flutter app template intended as a starting point for new apps. It includes platform folders (android, ios, web, macos, windows, linux), a small example app entry in `lib/main.dart`, and optional localization scaffolding.
+A production-ready Flutter app template with best practices, comprehensive testing, CI/CD pipelines, and multi-platform support. Use this as a starting point for your next Flutter project!
 
-## Quick start
+## ✨ Features
 
-Prerequisites: Flutter SDK installed and available on PATH. Verify with `flutter --version`.
+- 🎯 **Multi-platform support**: Android, iOS, Web, Windows, macOS, Linux
+- 🧪 **Comprehensive testing**: Unit, widget, and integration tests with coverage reporting
+- 🔄 **CI/CD pipelines**: Automated testing, building, and releases via GitHub Actions
+- 🎨 **Strict linting**: Enhanced analysis rules for code quality and consistency
+- 🌍 **Localization ready**: Pre-configured `l10n` support with ARB templates
+- 📦 **Pre-commit hooks**: Automatic formatting and checks before commits
+- 📚 **Well-documented**: Comprehensive guides for contributors
+- 🚀 **Release automation**: Automated build and release for all platforms
 
-From Windows cmd (project root):
+## 🚀 Quick Start
 
-```cmd
-cd D:\Projects\FlutterProjects\my\setup
-flutter pub get
-flutter run -d windows
+### Prerequisites
+
+- [Flutter SDK](https://flutter.dev/docs/get-started/install) (3.35.7 or later)
+- Git
+- IDE: [VS Code](https://code.visualstudio.com/) or [Android Studio](https://developer.android.com/studio)
+
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone https://github.com/chirag640/flutter_setup_template.git
+   cd flutter_setup_template
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   flutter pub get
+   ```
+
+3. **Verify setup**
+
+   ```bash
+   flutter doctor
+   flutter analyze
+   flutter test
+   ```
+
+4. **Run the app**
+
+   ```bash
+   # For Windows
+   flutter run -d windows
+
+   # For Web
+   flutter run -d chrome
+
+   # For Android (device/emulator must be connected)
+   flutter run -d android
+
+   # For iOS (macOS only, device/simulator must be connected)
+   flutter run -d ios
+   ```
+
+## 📁 Project Structure
+
+```
+lib/
+├── core/              # Core utilities, constants, themes, extensions
+├── features/          # Feature modules (each self-contained)
+├── widgets/           # Reusable widgets
+├── l10n/              # Localization files (ARB format)
+└── main.dart          # App entry point
+
+test/
+├── helpers/           # Test utilities and mocks
+├── unit/              # Unit tests
+├── widget/            # Widget tests
+└── integration/       # Integration tests
+
+scripts/               # Helper scripts (pre-commit, etc.)
+.github/
+├── workflows/         # CI/CD workflows
+└── ISSUE_TEMPLATE/    # Issue and PR templates
 ```
 
-Replace `-d windows` with `-d chrome`, `-d android`, `-d ios`, or another device id as appropriate.
+## 🛠️ Development
 
-## Scaffold a new app from this template (Quick)
+### Code Quality
 
-If you want to use this repository as a template for a new app, follow these quick steps:
+This project enforces strict code quality standards:
 
-1. Clone or copy this folder to a new location and rename the root directory to your app id (for example `my_app`).
+```bash
+# Format code
+dart format .
 
-2. Update package name / bundle id:
-	- Android: edit `android/app/src/main/AndroidManifest.xml` and `android/app/build.gradle.kts` as needed.
-	- iOS/macOS: update the bundle identifier in Xcode for `ios/Runner` and `macos/Runner`.
+# Analyze code
+flutter analyze
 
-3. Update `pubspec.yaml`:
-	- Change the `name:` field to your package name (lowercase_with_underscores).
-	- Update `description` and `version`.
+# Run all tests
+flutter test
 
-4. Replace the example app code in `lib/main.dart` with your own app logic.
-
-5. Regenerate platform-specific files if you change the application id/package name. For Android package renames consider moving/renaming the Kotlin/Java package folders and updating Gradle settings.
-
-6. Run `flutter pub get` and test on each target platform you support:
-
-```cmd
-flutter clean
-flutter pub get
-flutter run
+# Run tests with coverage
+flutter test --coverage
 ```
 
-## Recommended repository files
+### Pre-commit Hooks (Recommended)
 
-This template includes basic tooling files to make development and CI simpler. If you don't see them in your derived project they should be added:
+Install pre-commit hooks to automatically check code quality before commits:
 
-- `.gitignore` – standard Flutter/Dart ignore rules (generated below).
-- `.gitattributes` – normalize line endings and mark binary files.
-- `.github/workflows/flutter_ci.yml` – example GitHub Actions workflow to run `flutter analyze` and `flutter test`.
+**Windows:**
 
-## Project structure (short)
+```cmd
+scripts\install_hooks.bat
+```
 
-- `lib/` — Dart source, app entry at `lib/main.dart`.
-- `android/`, `ios/`, `macos/`, `windows/`, `linux/`, `web/` — platform-specific folders.
-- `pubspec.yaml` — dependencies and asset configuration.
+**Linux/macOS:**
 
-## Notes
+```bash
+chmod +x scripts/install_hooks.sh
+./scripts/install_hooks.sh
+```
 
-- When scaffolding a new app from this template, carefully update package identifiers and Firebase/third-party keys before publishing.
-- This repo contains optional localization scaffolding in `lib/l10n/` if you plan to use `flutter gen-l10n`.
+This will automatically run formatting, analysis, and tests before each commit.
+
+## 🧪 Testing
+
+### Run Tests
+
+```bash
+# All tests
+flutter test
+
+# With coverage
+flutter test --coverage
+
+# Specific test file
+flutter test test/unit/example_test.dart
+
+# Integration tests
+flutter test integration_test/
+```
+
+### Coverage
+
+Coverage reports are automatically generated and uploaded to Codecov via CI. To view locally:
+
+```bash
+flutter test --coverage
+# Then open coverage/lcov.info in your IDE
+```
+
+## 🏗️ Building
+
+### Android
+
+```bash
+# Debug APK
+flutter build apk --debug
+
+# Release APK
+flutter build apk --release
+
+# App Bundle (for Play Store)
+flutter build appbundle --release
+```
+
+### iOS (macOS only)
+
+```bash
+# Debug
+flutter build ios --debug --no-codesign
+
+# Release (requires signing)
+flutter build ios --release
+```
+
+### Web
+
+```bash
+flutter build web --release
+```
+
+### Desktop
+
+```bash
+# Windows
+flutter build windows --release
+
+# macOS
+flutter build macos --release
+
+# Linux
+flutter build linux --release
+```
+
+## 🔄 CI/CD
+
+This project includes two GitHub Actions workflows:
+
+### CI Workflow (`ci.yml`)
+
+Runs on every push and PR:
+
+- ✅ Code formatting check
+- ✅ Static analysis
+- ✅ Unit and widget tests with coverage
+- ✅ Build verification for Android, iOS, Web
+
+### Release Workflow (`release.yml`)
+
+Triggers on push to `main` or manually:
+
+- 📦 Builds release artifacts for all platforms
+- 🚀 Creates GitHub release with version from `pubspec.yaml`
+- 📤 Uploads APK, AAB, IPA, and desktop builds
+
+## 🌍 Localization
+
+This project uses Flutter's built-in localization support:
+
+1. Add ARB files in `lib/l10n/`
+2. Run code generation:
+   ```bash
+   flutter gen-l10n
+   ```
+3. Use in code:
+   ```dart
+   Text(AppLocalizations.of(context)!.helloWorld)
+   ```
+
+## 📖 Documentation
+
+- [Contributing Guide](CONTRIBUTING.md) - How to contribute
+- [Code of Conduct](CODE_OF_CONDUCT.md) - Community guidelines
+- [Issue Templates](.github/ISSUE_TEMPLATE/) - Bug reports and feature requests
+- [PR Template](.github/pull_request_template.md) - Pull request guidelines
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details on:
+
+- Development workflow
+- Code standards
+- Testing requirements
+- Pull request process
+
+### Quick Contribution Steps
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Run tests and checks
+5. Commit (`git commit -m 'feat: add amazing feature'`)
+6. Push (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+## 📋 Roadmap
+
+See our [open issues](https://github.com/chirag640/flutter_setup_template/issues) for planned features and known issues.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- Flutter team for the amazing framework
+- Contributors and maintainers
+- Open source community
+
+## 📧 Contact
+
+- **Issues**: [GitHub Issues](https://github.com/chirag640/flutter_setup_template/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/chirag640/flutter_setup_template/discussions)
 
 ---
 
-If you'd like, I can now add the recommended `.gitignore`, `.gitattributes`, and a CI workflow file into the repository. Tell me if you'd like the GitHub Actions workflow to run on Linux, Windows, macOS, or all three.
+**Made with ❤️ using Flutter**

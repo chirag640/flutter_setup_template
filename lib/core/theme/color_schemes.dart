@@ -3,7 +3,6 @@ import 'app_colors.dart';
 
 final lightColorScheme = ColorScheme.fromSeed(
   seedColor: AppColors.primary,
-  brightness: Brightness.light,
   primary: AppColors.primary,
   secondary: AppColors.secondary,
   surface: AppColors.surface,

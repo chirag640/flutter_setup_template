@@ -11,7 +11,10 @@ class FileLogSink {
 
   String? get filePath => _logFile?.path;
 
-  Future<void> init({required int maxFileSizeBytes, required int maxFiles}) async {
+  Future<void> init({
+    required int maxFileSizeBytes,
+    required int maxFiles,
+  }) async {
     _maxFileSizeBytes = maxFileSizeBytes;
     _maxFiles = maxFiles;
 
@@ -29,9 +32,12 @@ class FileLogSink {
   void write(String data) {
     final file = _logFile;
     if (file == null) return;
-    file.writeAsString(data, mode: FileMode.append).then((_) async {
-      await _rotateIfNeeded();
-    }).catchError((_) {});
+    file
+        .writeAsString(data, mode: FileMode.append)
+        .then((_) async {
+          await _rotateIfNeeded();
+        })
+        .catchError((_) {});
   }
 
   Future<void> clear() async {
@@ -93,7 +99,9 @@ class FileLogSink {
           .where((e) => e is File && e.path.endsWith('.log'))
           .cast<File>()
           .toList();
-      files.sort((a, b) => b.lastModifiedSync().compareTo(a.lastModifiedSync()));
+      files.sort(
+        (a, b) => b.lastModifiedSync().compareTo(a.lastModifiedSync()),
+      );
       if (files.length > _maxFiles) {
         for (int i = _maxFiles; i < files.length; i++) {
           try {

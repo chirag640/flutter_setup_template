@@ -1,6 +1,6 @@
 name: setup
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
@@ -11,18 +11,31 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  intl: ^0.20.2
-  path_provider: ^2.1.3
+  dartz: ^0.10.1
+  dio: ^5.7.0
+  equatable: ^2.0.7
+  flutter_riverpod: ^2.6.1
+  flutter_secure_storage: ^9.2.2
+  go_router: ^14.6.2
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
   http: ^1.2.2
+  intl: ^0.20.2
   meta: ^1.12.0
-  sizer: ^2.0.15
-  provider: ^6.1.2
+  path_provider: ^2.1.3
+  riverpod_annotation: ^2.6.1
   shared_preferences: ^2.2.3
+  sizer: ^2.0.15
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  integration_test:
+    sdk: flutter
+  build_runner: ^2.4.13
   flutter_lints: ^5.0.0
+  mocktail: ^1.0.4
+  riverpod_generator: ^2.6.2
 
 flutter:
   uses-material-design: true

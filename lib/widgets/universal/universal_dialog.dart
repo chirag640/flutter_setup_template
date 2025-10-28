@@ -53,48 +53,52 @@ class _DialogVisualDefaults {
         return _DialogVisualDefaults(
           icon: Icons.check_circle_outline,
           iconColor: AppColors.success,
-          iconBackgroundColor:
-              AppColors.success.withAlpha(_opacityToAlpha(0.12)),
+          iconBackgroundColor: AppColors.success.withAlpha(
+            _opacityToAlpha(0.12),
+          ),
           titleColor: AppColors.textPrimary,
         );
       case DialogType.error:
         return _DialogVisualDefaults(
           icon: Icons.error_outline,
           iconColor: AppColors.error,
-          iconBackgroundColor:
-              AppColors.error.withAlpha(_opacityToAlpha(0.12)),
+          iconBackgroundColor: AppColors.error.withAlpha(_opacityToAlpha(0.12)),
           titleColor: AppColors.textPrimary,
         );
       case DialogType.warning:
         return _DialogVisualDefaults(
           icon: Icons.warning_amber_outlined,
           iconColor: AppColors.warning,
-          iconBackgroundColor:
-              AppColors.warning.withAlpha(_opacityToAlpha(0.12)),
+          iconBackgroundColor: AppColors.warning.withAlpha(
+            _opacityToAlpha(0.12),
+          ),
           titleColor: AppColors.textPrimary,
         );
       case DialogType.info:
         return _DialogVisualDefaults(
           icon: Icons.info_outline,
           iconColor: AppColors.primary,
-          iconBackgroundColor:
-              AppColors.primary.withAlpha(_opacityToAlpha(0.12)),
+          iconBackgroundColor: AppColors.primary.withAlpha(
+            _opacityToAlpha(0.12),
+          ),
           titleColor: AppColors.textPrimary,
         );
       case DialogType.question:
         return _DialogVisualDefaults(
           icon: Icons.help_outline,
           iconColor: AppColors.primary,
-          iconBackgroundColor:
-              AppColors.primary.withAlpha(_opacityToAlpha(0.12)),
+          iconBackgroundColor: AppColors.primary.withAlpha(
+            _opacityToAlpha(0.12),
+          ),
           titleColor: AppColors.textPrimary,
         );
       case DialogType.custom:
         return _DialogVisualDefaults(
           icon: Icons.info_outline,
           iconColor: AppColors.primary,
-          iconBackgroundColor:
-              AppColors.primary.withAlpha(_opacityToAlpha(0.12)),
+          iconBackgroundColor: AppColors.primary.withAlpha(
+            _opacityToAlpha(0.12),
+          ),
           titleColor: AppColors.textPrimary,
         );
     }
@@ -152,8 +156,8 @@ class UniversalDialog {
   /// Show confirmation dialog (Yes/No pattern)
   static Future<bool> showConfirmation(
     BuildContext context, {
-    String? title,
     required String message,
+    String? title,
     String confirmText = 'Confirm',
     String cancelText = 'Cancel',
     bool isDanger = false,
@@ -197,8 +201,8 @@ class UniversalDialog {
   /// Show success dialog
   static Future<void> showSuccess(
     BuildContext context, {
-    String title = 'Success',
     required String message,
+    String title = 'Success',
     String buttonText = 'OK',
     bool barrierDismissible = true,
     Duration? autoDismissAfter,
@@ -241,8 +245,8 @@ class UniversalDialog {
   /// Show error dialog
   static Future<void> showError(
     BuildContext context, {
-    String title = 'Error',
     required String message,
+    String title = 'Error',
     String buttonText = 'OK',
     bool barrierDismissible = true,
   }) {
@@ -276,8 +280,8 @@ class UniversalDialog {
   /// Show warning dialog
   static Future<void> showWarning(
     BuildContext context, {
-    String title = 'Warning',
     required String message,
+    String title = 'Warning',
     String buttonText = 'OK',
     bool barrierDismissible = true,
   }) {
@@ -311,8 +315,8 @@ class UniversalDialog {
   /// Show info dialog
   static Future<void> showInfo(
     BuildContext context, {
-    String title = 'Info',
     required String message,
+    String title = 'Info',
     String buttonText = 'OK',
     bool barrierDismissible = true,
   }) {
@@ -444,16 +448,15 @@ class _UniversalDialogWidget extends StatelessWidget {
                 padding: EdgeInsets.fromLTRB(6.w, 2.5.h, 6.w, 1.h),
                 child: Text(
                   title!,
-                  style: AppFonts.s18bold
-                      .copyWith(fontSize: 16.sp, color: resolvedTitleColor),
+                  style: AppFonts.s18bold.copyWith(
+                    fontSize: 16.sp,
+                    color: resolvedTitleColor,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ),
             if (child != null)
-              Padding(
-                padding: effectiveContentPadding,
-                child: child,
-              ),
+              Padding(padding: effectiveContentPadding, child: child),
             if (actions != null && actions!.isNotEmpty)
               Padding(
                 padding: effectiveActionsPadding,
@@ -484,11 +487,7 @@ class _UniversalDialogWidget extends StatelessWidget {
             color: backgroundColor,
             shape: BoxShape.circle,
           ),
-          child: Icon(
-            icon,
-            size: size.sp,
-            color: iconColor,
-          ),
+          child: Icon(icon, size: size.sp, color: iconColor),
         ),
       ),
     );

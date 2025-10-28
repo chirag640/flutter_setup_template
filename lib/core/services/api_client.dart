@@ -9,15 +9,14 @@ import 'network_logger.dart';
 
 @immutable
 class ApiResult {
-  final int statusCode;
-  final Map<String, dynamic> body;
-  final Map<String, String> headers;
-
   const ApiResult({
     required this.statusCode,
     required this.body,
     required this.headers,
   });
+  final int statusCode;
+  final Map<String, dynamic> body;
+  final Map<String, String> headers;
 
   bool get ok {
     // Prefer explicit response signals from the body when present.
@@ -45,9 +44,9 @@ class ApiResult {
 }
 
 class ApiException implements Exception {
+  ApiException(this.message, {this.statusCode});
   final String message;
   final int? statusCode;
-  ApiException(this.message, {this.statusCode});
   @override
   String toString() => 'ApiException($statusCode): $message';
 }
@@ -55,10 +54,6 @@ class ApiException implements Exception {
 typedef TokenProvider = Future<String?> Function();
 
 class ApiClient {
-  final http.Client _client;
-  final TokenProvider? tokenProvider;
-  final Duration timeout;
-
   ApiClient({
     this.tokenProvider,
     http.Client? client,
@@ -66,9 +61,19 @@ class ApiClient {
   }) : _client = client ?? LoggingHttpClient();
 
   /// Convenience factory to ensure logging client is used explicitly
-  factory ApiClient.withLogging({TokenProvider? tokenProvider, Duration timeout = const Duration(seconds: 20)}) {
-    return ApiClient(tokenProvider: tokenProvider, client: LoggingHttpClient(), timeout: timeout);
+  factory ApiClient.withLogging({
+    TokenProvider? tokenProvider,
+    Duration timeout = const Duration(seconds: 20),
+  }) {
+    return ApiClient(
+      tokenProvider: tokenProvider,
+      client: LoggingHttpClient(),
+      timeout: timeout,
+    );
   }
+  final http.Client _client;
+  final TokenProvider? tokenProvider;
+  final Duration timeout;
 
   Future<ApiResult> post(
     String url, {

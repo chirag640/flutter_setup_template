@@ -51,10 +51,10 @@ class UniversalAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   // Named constructors
   factory UniversalAppBar.gradient({
+    required Gradient gradient,
     Key? key,
     String? title,
     Widget? titleWidget,
-    required Gradient gradient,
     bool showBackButton = true,
     VoidCallback? onBackPressed,
     List<Widget>? actions,
@@ -79,8 +79,8 @@ class UniversalAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   factory UniversalAppBar.search({
-    Key? key,
     required ValueChanged<String> onSearch,
+    Key? key,
     String hintText = 'Search...',
     Color? backgroundColor,
     double? height,
@@ -89,10 +89,7 @@ class UniversalAppBar extends StatelessWidget implements PreferredSizeWidget {
       key: key,
       backgroundColor: backgroundColor,
       height: height,
-      titleWidget: _SearchBar(
-        onSearch: onSearch,
-        hintText: hintText,
-      ),
+      titleWidget: _SearchBar(onSearch: onSearch, hintText: hintText),
       showBackButton: false,
       centerTitle: false,
     );
@@ -133,16 +130,16 @@ class UniversalAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize => Size.fromHeight(
-        (height ?? kToolbarHeight) + (bottom?.preferredSize.height ?? 0),
-      );
+    (height ?? kToolbarHeight) + (bottom?.preferredSize.height ?? 0),
+  );
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
 
-    final effectiveBgColor = backgroundColor ??
-        (isDark ? const Color(0xFF1E1E1E) : Colors.white);
+    final effectiveBgColor =
+        backgroundColor ?? (isDark ? const Color(0xFF1E1E1E) : Colors.white);
     final effectiveFgColor =
         foregroundColor ?? (isDark ? Colors.white : AppColors.textPrimary);
 
@@ -169,7 +166,7 @@ class UniversalAppBar extends StatelessWidget implements PreferredSizeWidget {
     }
 
     // Build app bar
-    AppBar appBar = AppBar(
+    final AppBar appBar = AppBar(
       title: titleContent,
       centerTitle: centerTitle,
       leading: leadingWidget,
@@ -189,7 +186,8 @@ class UniversalAppBar extends StatelessWidget implements PreferredSizeWidget {
       shape: showBottomBorder
           ? Border(
               bottom: BorderSide(
-                color: borderColor ??
+                color:
+                    borderColor ??
                     (isDark ? Colors.grey[800]! : AppColors.outline),
                 width: borderWidth,
               ),
@@ -200,7 +198,7 @@ class UniversalAppBar extends StatelessWidget implements PreferredSizeWidget {
     return appBar;
   }
 
-  void _handleBack(BuildContext context) async {
+  Future<void> _handleBack(BuildContext context) async {
     if (confirmOnBack) {
       final shouldPop = await showDialog<bool>(
         context: context,
@@ -220,8 +218,8 @@ class UniversalAppBar extends StatelessWidget implements PreferredSizeWidget {
           ],
         ),
       );
-  if (!context.mounted) return;
-  if (shouldPop == true) {
+      if (!context.mounted) return;
+      if (shouldPop ?? false) {
         if (onBackPressed != null) {
           onBackPressed!();
         } else if (Navigator.of(context).canPop()) {
@@ -239,10 +237,7 @@ class UniversalAppBar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class _SearchBar extends StatefulWidget {
-  const _SearchBar({
-    required this.onSearch,
-    this.hintText = 'Search...',
-  });
+  const _SearchBar({required this.onSearch, this.hintText = 'Search...'});
 
   final ValueChanged<String> onSearch;
   final String hintText;

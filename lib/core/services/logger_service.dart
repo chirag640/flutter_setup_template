@@ -44,6 +44,7 @@ class AppLogger {
   LogLevel get minLogLevel => _minLogLevel;
   bool get isConsoleLoggingEnabled => _enableConsoleLogging;
   bool get isFileLoggingEnabled => _enableFileLogging;
+  bool get isInitialized => _isInitialized;
 
   Future<void> init({
     LogLevel minLogLevel = LogLevel.debug,
@@ -63,7 +64,10 @@ class AppLogger {
     if (_enableFileLogging) {
       _fileSink = FileLogSink();
       try {
-        await _fileSink!.init(maxFileSizeBytes: _maxLogFileSize, maxFiles: _maxLogFiles);
+        await _fileSink!.init(
+          maxFileSizeBytes: _maxLogFileSize,
+          maxFiles: _maxLogFiles,
+        );
       } catch (e) {
         // If file sink fails (e.g., on web), disable file logging
         _enableFileLogging = false;
@@ -82,22 +86,56 @@ class AppLogger {
   }
 
   // Public API (short)
-  void d(String message, {String? tag, dynamic extra}) => _log(LogLevel.debug, message, tag: tag, extra: extra);
-  void i(String message, {String? tag, dynamic extra}) => _log(LogLevel.info, message, tag: tag, extra: extra);
-  void w(String message, {String? tag, dynamic extra}) => _log(LogLevel.warning, message, tag: tag, extra: extra);
-  void e(String message, {String? tag, dynamic extra, StackTrace? stackTrace}) =>
-      _log(LogLevel.error, message, tag: tag, extra: extra, stackTrace: stackTrace);
-  void c(String message, {String? tag, dynamic extra, StackTrace? stackTrace}) =>
-      _log(LogLevel.critical, message, tag: tag, extra: extra, stackTrace: stackTrace);
+  void d(String message, {String? tag, dynamic extra}) =>
+      _log(LogLevel.debug, message, tag: tag, extra: extra);
+  void i(String message, {String? tag, dynamic extra}) =>
+      _log(LogLevel.info, message, tag: tag, extra: extra);
+  void w(String message, {String? tag, dynamic extra}) =>
+      _log(LogLevel.warning, message, tag: tag, extra: extra);
+  void e(
+    String message, {
+    String? tag,
+    dynamic extra,
+    StackTrace? stackTrace,
+  }) => _log(
+    LogLevel.error,
+    message,
+    tag: tag,
+    extra: extra,
+    stackTrace: stackTrace,
+  );
+  void c(
+    String message, {
+    String? tag,
+    dynamic extra,
+    StackTrace? stackTrace,
+  }) => _log(
+    LogLevel.critical,
+    message,
+    tag: tag,
+    extra: extra,
+    stackTrace: stackTrace,
+  );
 
   // Public API (aliases)
-  void debug(String message, {String? tag, dynamic extra}) => d(message, tag: tag, extra: extra);
-  void info(String message, {String? tag, dynamic extra}) => i(message, tag: tag, extra: extra);
-  void warning(String message, {String? tag, dynamic extra}) => w(message, tag: tag, extra: extra);
-  void error(String message, {String? tag, dynamic extra, StackTrace? stackTrace}) =>
-      e(message, tag: tag, extra: extra, stackTrace: stackTrace);
-  void critical(String message, {String? tag, dynamic extra, StackTrace? stackTrace}) =>
-      c(message, tag: tag, extra: extra, stackTrace: stackTrace);
+  void debug(String message, {String? tag, dynamic extra}) =>
+      d(message, tag: tag, extra: extra);
+  void info(String message, {String? tag, dynamic extra}) =>
+      i(message, tag: tag, extra: extra);
+  void warning(String message, {String? tag, dynamic extra}) =>
+      w(message, tag: tag, extra: extra);
+  void error(
+    String message, {
+    String? tag,
+    dynamic extra,
+    StackTrace? stackTrace,
+  }) => e(message, tag: tag, extra: extra, stackTrace: stackTrace);
+  void critical(
+    String message, {
+    String? tag,
+    dynamic extra,
+    StackTrace? stackTrace,
+  }) => c(message, tag: tag, extra: extra, stackTrace: stackTrace);
 
   void _log(
     LogLevel level,
@@ -110,15 +148,15 @@ class AppLogger {
 
     final timestamp = _dateFormat.format(DateTime.now());
     final tagStr = tag != null ? '[$tag]' : '';
-    final logMessage = '$timestamp ${level.emoji} ${level.label} $tagStr: $message';
+    final logMessage =
+        '$timestamp ${level.emoji} ${level.label} $tagStr: $message';
 
     if (_enableConsoleLogging) {
       _printToConsole(level, logMessage, extra: extra, stackTrace: stackTrace);
     }
 
     if (_enableFileLogging && _isInitialized && _fileSink != null) {
-      final buffer = StringBuffer(logMessage)
-        ..writeln();
+      final buffer = StringBuffer(logMessage)..writeln();
       if (extra != null) buffer.writeln('Extra: $extra');
       if (stackTrace != null) buffer.writeln('StackTrace: $stackTrace');
       _fileSink!.write(buffer.toString());
@@ -137,7 +175,12 @@ class AppLogger {
     }
   }
 
-  void _printToConsole(LogLevel level, String message, {dynamic extra, StackTrace? stackTrace}) {
+  void _printToConsole(
+    LogLevel level,
+    String message, {
+    dynamic extra,
+    StackTrace? stackTrace,
+  }) {
     // ANSI colors (supported in most dev consoles)
     const reset = '\x1B[0m';
     const red = '\x1B[31m';
@@ -190,7 +233,9 @@ class AppLogger {
   }
 
   String getRecentLogs({int count = 50}) {
-    final recent = _logBuffer.length > count ? _logBuffer.sublist(_logBuffer.length - count) : _logBuffer;
+    final recent = _logBuffer.length > count
+        ? _logBuffer.sublist(_logBuffer.length - count)
+        : _logBuffer;
     return recent.join('\n');
   }
 
@@ -247,13 +292,26 @@ class AppLogger {
 
 // Easy extension methods for any object
 extension LoggerExtension on Object {
-  void logd(String message, {dynamic extra}) => AppLogger.instance.d(message, tag: runtimeType.toString(), extra: extra);
-  void logi(String message, {dynamic extra}) => AppLogger.instance.i(message, tag: runtimeType.toString(), extra: extra);
-  void logw(String message, {dynamic extra}) => AppLogger.instance.w(message, tag: runtimeType.toString(), extra: extra);
+  void logd(String message, {dynamic extra}) =>
+      AppLogger.instance.d(message, tag: runtimeType.toString(), extra: extra);
+  void logi(String message, {dynamic extra}) =>
+      AppLogger.instance.i(message, tag: runtimeType.toString(), extra: extra);
+  void logw(String message, {dynamic extra}) =>
+      AppLogger.instance.w(message, tag: runtimeType.toString(), extra: extra);
   void loge(String message, {dynamic extra, StackTrace? stackTrace}) =>
-      AppLogger.instance.e(message, tag: runtimeType.toString(), extra: extra, stackTrace: stackTrace);
+      AppLogger.instance.e(
+        message,
+        tag: runtimeType.toString(),
+        extra: extra,
+        stackTrace: stackTrace,
+      );
   void logc(String message, {dynamic extra, StackTrace? stackTrace}) =>
-      AppLogger.instance.c(message, tag: runtimeType.toString(), extra: extra, stackTrace: stackTrace);
+      AppLogger.instance.c(
+        message,
+        tag: runtimeType.toString(),
+        extra: extra,
+        stackTrace: stackTrace,
+      );
 }
 
 // Simple performance timing utilities
@@ -274,14 +332,23 @@ class PerformanceLogger {
     }
     sw.stop();
     final duration = sw.elapsed;
-    _logger.i('⏱️ $operationName took ${duration.inMilliseconds}ms', tag: 'Performance');
+    _logger.i(
+      '⏱️ $operationName took ${duration.inMilliseconds}ms',
+      tag: 'Performance',
+    );
     if (duration.inMilliseconds > 1000) {
-      _logger.w('Slow operation detected: $operationName (${duration.inMilliseconds}ms)', tag: 'Performance');
+      _logger.w(
+        'Slow operation detected: $operationName (${duration.inMilliseconds}ms)',
+        tag: 'Performance',
+      );
     }
     return duration;
   }
 
-  static Future<T> timeAsync<T>(String operationName, Future<T> Function() op) async {
+  static Future<T> timeAsync<T>(
+    String operationName,
+    Future<T> Function() op,
+  ) async {
     startTiming(operationName);
     try {
       final result = await op();
@@ -312,18 +379,22 @@ final CompatLogger log = CompatLogger();
 
 class CompatLogger {
   void d(dynamic message, {Object? error, StackTrace? stackTrace}) =>
-    AppLogger.instance.d(message.toString(), extra: error);
+      AppLogger.instance.d(message.toString(), extra: error);
   void i(dynamic message, {Object? error, StackTrace? stackTrace}) =>
-    AppLogger.instance.i(message.toString(), extra: error);
+      AppLogger.instance.i(message.toString(), extra: error);
   void w(dynamic message, {Object? error, StackTrace? stackTrace}) =>
-    AppLogger.instance.w(message.toString(), extra: error);
-  void e(dynamic message, {Object? error, StackTrace? stackTrace}) =>
-    AppLogger.instance.e(message.toString(), extra: error, stackTrace: stackTrace);
+      AppLogger.instance.w(message.toString(), extra: error);
+  void e(dynamic message, {Object? error, StackTrace? stackTrace}) => AppLogger
+      .instance
+      .e(message.toString(), extra: error, stackTrace: stackTrace);
   // Map 'wtf' (what a terrible failure) to critical
   void wtf(dynamic message, {Object? error, StackTrace? stackTrace}) =>
-    AppLogger.instance.c(message.toString(), extra: error, stackTrace: stackTrace);
+      AppLogger.instance.c(
+        message.toString(),
+        extra: error,
+        stackTrace: stackTrace,
+      );
   // Verbose -> debug
   void v(dynamic message, {Object? error, StackTrace? stackTrace}) =>
-    AppLogger.instance.d(message.toString(), extra: error);
+      AppLogger.instance.d(message.toString(), extra: error);
 }
-

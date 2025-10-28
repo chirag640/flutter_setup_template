@@ -57,9 +57,9 @@ class UniversalBottomBar extends StatelessWidget {
   });
 
   factory UniversalBottomBar.actions({
-    Key? key,
     required String primaryText,
     required VoidCallback? primaryOnPressed,
+    Key? key,
     String? secondaryText,
     VoidCallback? secondaryOnPressed,
     IconData? primaryIcon,
@@ -102,9 +102,9 @@ class UniversalBottomBar extends StatelessWidget {
   }
 
   factory UniversalBottomBar.single({
-    Key? key,
     required String text,
     required VoidCallback? onPressed,
+    Key? key,
     IconData? icon,
     bool isLoading = false,
     double? height,
@@ -137,8 +137,8 @@ class UniversalBottomBar extends StatelessWidget {
   }
 
   factory UniversalBottomBar.custom({
-    Key? key,
     required List<Widget> children,
+    Key? key,
     MainAxisAlignment alignment = MainAxisAlignment.spaceBetween,
     double? height,
     EdgeInsetsGeometry? padding,
@@ -150,7 +150,6 @@ class UniversalBottomBar extends StatelessWidget {
   }) {
     return UniversalBottomBar(
       key: key,
-      mode: BottomBarMode.custom,
       alignment: alignment,
       height: height,
       padding: padding,
@@ -211,10 +210,13 @@ class UniversalBottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    final effectiveBgColor = backgroundColor ?? (isDark ? const Color(0xFF1E1E1E) : Colors.white);
+    final effectiveBgColor =
+        backgroundColor ?? (isDark ? const Color(0xFF1E1E1E) : Colors.white);
     final effectiveHeight = height ?? 9.h;
-    final effectivePadding = padding ?? EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h);
-    final effectiveBorderColor = borderColor ?? (isDark ? Colors.grey[800]! : AppColors.outline);
+    final effectivePadding =
+        padding ?? EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.5.h);
+    final effectiveBorderColor =
+        borderColor ?? (isDark ? Colors.grey[800]! : AppColors.outline);
 
     Widget content = _buildContent();
     content = Padding(padding: effectivePadding, child: content);
@@ -225,7 +227,12 @@ class UniversalBottomBar extends StatelessWidget {
         color: gradient == null ? effectiveBgColor : null,
         gradient: gradient,
         border: showTopBorder
-            ? Border(top: BorderSide(color: effectiveBorderColor, width: borderWidth))
+            ? Border(
+                top: BorderSide(
+                  color: effectiveBorderColor,
+                  width: borderWidth,
+                ),
+              )
             : null,
         boxShadow: elevation > 0
             ? [
@@ -273,9 +280,7 @@ class UniversalBottomBar extends StatelessWidget {
     final buttonChildren = <Widget>[];
     if (secondaryText != null) {
       buttonChildren.add(
-        Expanded(
-          child: _buildSecondaryButton(expanded: true),
-        ),
+        Expanded(child: _buildSecondaryButton(expanded: true)),
       );
       buttonChildren.add(SizedBox(width: spacing));
     }
@@ -299,8 +304,9 @@ class UniversalBottomBar extends StatelessWidget {
       backgroundColor: primaryGradient == null ? baseBackground : null,
       gradient: primaryGradient,
       foregroundColor: primaryForegroundColor ?? Colors.white,
-    disabledBackgroundColor: primaryDisabledBackgroundColor ??
-      baseBackground.withAlpha(_opacityToAlpha(0.4)),
+      disabledBackgroundColor:
+          primaryDisabledBackgroundColor ??
+          baseBackground.withAlpha(_opacityToAlpha(0.4)),
       disabledForegroundColor: primaryDisabledForegroundColor ?? Colors.white70,
       borderColor: primaryShowBorder || primaryBorderColor != null
           ? (primaryBorderColor ?? baseBackground)
@@ -310,7 +316,9 @@ class UniversalBottomBar extends StatelessWidget {
       height: buttonHeight ?? 5.6.h,
       width: expanded ? double.infinity : null,
       borderRadius: buttonBorderRadius ?? 3.w,
-      padding: primaryPadding ?? EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.4.h),
+      padding:
+          primaryPadding ??
+          EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.4.h),
     );
   }
 
@@ -328,15 +336,20 @@ class UniversalBottomBar extends StatelessWidget {
       foregroundColor: baseForeground,
       disabledBackgroundColor:
           secondaryDisabledBackgroundColor ?? baseBackground,
-    disabledForegroundColor: secondaryDisabledForegroundColor ??
-      baseForeground.withAlpha(_opacityToAlpha(0.4)),
-      borderColor: secondaryShowBorder || secondaryBorderColor != null ? borderColor : null,
+      disabledForegroundColor:
+          secondaryDisabledForegroundColor ??
+          baseForeground.withAlpha(_opacityToAlpha(0.4)),
+      borderColor: secondaryShowBorder || secondaryBorderColor != null
+          ? borderColor
+          : null,
       borderWidth: secondaryBorderWidth,
       showBorder: secondaryShowBorder || secondaryBorderColor != null,
       height: buttonHeight ?? 5.6.h,
       width: expanded ? double.infinity : null,
       borderRadius: buttonBorderRadius ?? 3.w,
-      padding: secondaryPadding ?? EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.4.h),
+      padding:
+          secondaryPadding ??
+          EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.4.h),
     );
   }
 }

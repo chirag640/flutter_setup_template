@@ -3,7 +3,10 @@
 class FileLogSink {
   String? get filePath => null;
 
-  Future<void> init({required int maxFileSizeBytes, required int maxFiles}) async {}
+  Future<void> init({
+    required int maxFileSizeBytes,
+    required int maxFiles,
+  }) async {}
 
   void write(String data) {}
 
